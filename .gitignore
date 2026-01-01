@@ -1,0 +1,12 @@
+# storage
+storage/
+
+# test
+test.ipynb
+
+lecture/
+
+# AI IDE
+.vscode/
+.cursor/
+.trae/
