@@ -1,0 +1,116 @@
+/* 侧边栏样式 */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #63C5F4;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-section {
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.section-title {
+  font-weight: bold;
+  color: #FFFFFF;
+  font-size: 18px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  gap: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+}
+
+.project-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid #FFFFFF;
+}
+
+.project-item.selected {
+  background-color: rgba(255, 214, 0, 0.2);
+}
+
+.project-item.selected .ant-menu-submenu-title {
+  color: #FFFFFF;
+}
+
+.create-project-item {
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+/* 项目列表背景色 */
+.project-list {
+  background-color: #63C5F4;
+}
+
+/* 项目菜单背景色 */
+.project-list .ant-menu {
+  background-color: #63C5F4;
+  color: #000000;
+}
+
+/* 子菜单背景色 */
+.project-list .ant-menu-sub {
+  background-color: #63C5F4;
+}
+
+/* 子菜单项样式 */
+.project-list .ant-menu-submenu-title {
+  color: #000000 !important;
+}
+
+.project-list .ant-menu-item {
+  color: #000000 !important;
+}
+
+.project-list .ant-menu-item:hover {
+  background-color: rgba(255, 214, 0, 0.2) !important;
+}
+
+.project-list .ant-menu-item-selected {
+  background-color: rgba(255, 214, 0, 0.3) !important;
+  color: #000000 !important;
+}
+
+/* 菜单样式覆盖 */
+.ant-menu-vertical.ant-menu-inline > .ant-menu-item {
+  color: #000000;
+}
+
+.ant-menu-vertical.ant-menu-inline > .ant-menu-item:hover,
+.ant-menu-vertical.ant-menu-inline > .ant-menu-item-active {
+  color: #000000;
+  background-color: rgba(255, 214, 0, 0.2);
+}
+
+.ant-menu-vertical.ant-menu-inline > .ant-menu-item-selected {
+  color: #000000;
+  background-color: rgba(255, 214, 0, 0.3);
+}
+
+.ant-menu-vertical.ant-menu-inline > .ant-menu-item::after {
+  border-right: 3px solid #FFD600;
+}
+
+/* 链接样式 */
+.sidebar a {
+  color: #000000;
+}
+
+.sidebar a:hover {
+  color: #000000;
+  opacity: 0.8;
+}

@@ -1,0 +1,136 @@
+/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 布局样式 */
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: #1E88E5;
+  color: #FFD600;
+}
+
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid #FFD600;
+  background: #1E88E5;
+}
+
+.sidebar-header h2 {
+  color: #FFD600;
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 哆啦A梦主题色定义 */
+:root {
+  --doraemon-blue: #1E88E5;
+  --doraemon-yellow: #FFD600;
+  --doraemon-white: #FFFFFF;
+  --doraemon-red: #F44336;
+}
+
+/* 覆盖Ant Design默认样式 */
+.ant-btn-primary {
+  background-color: var(--doraemon-blue);
+  border-color: var(--doraemon-blue);
+}
+
+.ant-btn-primary:hover {
+  background-color: #1976D2;
+  border-color: #1976D2;
+}
+
+.ant-btn-default {
+  border-color: var(--doraemon-blue);
+  color: var(--doraemon-blue);
+}
+
+.ant-btn-default:hover {
+  border-color: #1976D2;
+  color: #1976D2;
+}
+
+.ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ant-card-head {
+  background-color: var(--doraemon-blue);
+  color: var(--doraemon-white);
+  border-bottom: 1px solid var(--doraemon-yellow);
+}
+
+.ant-card-head-title {
+  color: var(--doraemon-white);
+  font-weight: bold;
+}
+
+/* 设置页面样式 */
+.settings-page {
+  width: 100%;
+}
+
+.env-settings-card, .role-settings-card {
+  margin-bottom: 20px;
+}
+
+.env-settings-form, .role-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.form-item label {
+  width: 200px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.form-item .ant-input {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* 进度条样式 */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress {
+  height: 100%;
+  background-color: #63C5F4;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  display: block;
+  text-align: right;
+  color: #666;
+  font-size: 12px;
+}
