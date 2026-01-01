@@ -1,0 +1,22 @@
+[project]
+name = "ppt2audio-backend"
+version = "0.1.0"
+description = "Backend for PPT2Audio"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.124.0",
+    "openai>=2.8.1",
+    "pillow>=12.0.0",
+    "pydantic>=2.12.5",
+    "pydantic-ai-slim[openai]>=1.25.1",
+    "pydub>=0.25.1",
+    "python-dotenv>=1.2.1",
+    "python-pptx>=1.0.2",
+    "pyyaml>=6.0.3",
+    "uvicorn>=0.24.0",
+    "python-multipart>=0.0.9",
+    "httpx>=0.28.1",
+    "pdf2image>=1.17.0",
+]
+
