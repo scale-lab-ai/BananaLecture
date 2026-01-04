@@ -1,0 +1,16 @@
+services:
+  app:
+    image: chengjiale150/bananalecture:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bananalecture
+    ports:
+      - "3574:80"
+      - "8000:8000"
+    volumes:
+      - ./.env:/app/backend/.env
+      - ./.env.example:/app/backend/.env.example
+      - ./config.yaml:/app/backend/config.yaml
+      - ./storage:/app/backend/storage
+    restart: unless-stopped

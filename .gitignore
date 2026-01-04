@@ -1,6 +1,9 @@
 # storage
 storage/
 
+# env
+.env
+
 # test
 test.ipynb
 

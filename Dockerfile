@@ -36,7 +36,6 @@ COPY --from=frontend-builder /app/frontend/dist /usr/share/nginx/html
 
 # 复制后端代码和资源文件
 COPY backend/assets/ ./backend/assets/
-COPY backend/config.yaml backend/.env.example ./backend/
 COPY backend/app/ ./backend/app/
 
 # 复制 nginx 配置
