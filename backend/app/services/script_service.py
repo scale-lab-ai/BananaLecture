@@ -74,11 +74,11 @@ class ScriptService:
 2. 图片中所有出现的公式与数学符号均转化为Latex格式,并都用$$包裹,如$$E = m \\times c^2$$与$$1-\\epsilon$$""",
         )
     
-    async def _retry_with_exponential_backoff(self, coro, max_retries: int = 3, base_delay: float = 5.0):
+    async def _retry_with_exponential_backoff(self, coro_func, max_retries: int = 3, base_delay: float = 5.0):
         """带指数退避的重试机制
         
         Args:
-            coro: 异步协程函数
+            coro_func: 异步协程函数（可调用对象）
             max_retries: 最大重试次数，默认为3
             base_delay: 基础延迟时间（秒），默认为5
             
@@ -92,7 +92,7 @@ class ScriptService:
         
         for attempt in range(1, max_retries + 1):
             try:
-                return await coro
+                return await coro_func()
             except Exception as e:
                 last_exception = e
                 logger.warning(f"第 {attempt} 次尝试失败: {str(e)}")
