@@ -36,78 +36,120 @@ class PDFService:
         self.storage_dir.mkdir(parents=True, exist_ok=True)
     
     def get_image_path(self, project_id: str, page_number: int) -> Optional[Path]:
-        """获取指定项目和页码的图片路径
-        
+        """获取指定项目和页码的PNG图片路径（用于PPT合成）
+
         Args:
             project_id: 项目ID
             page_number: 页码（从1开始）
-            
+
         Returns:
-            图片文件路径，如果文件不存在则返回None
+            PNG图片文件路径，如果文件不存在则返回None
         """
         try:
-            # 构建图片路径
             image_path = self.storage_dir / project_id / "images" / f"page_{page_number:03d}.png"
-            
-            # 检查文件是否存在
+
             if image_path.exists():
                 return image_path
             return None
         except Exception as e:
-            logger.error(f"获取图片路径失败: {str(e)}")
+            logger.error(f"获取PNG图片路径失败: {str(e)}")
             return None
-    
+
+    def get_webp_image_path(self, project_id: str, page_number: int) -> Optional[Path]:
+        """获取指定项目和页码的WebP图片路径（用于前端传输）
+
+        Args:
+            project_id: 项目ID
+            page_number: 页码（从1开始）
+
+        Returns:
+            WebP图片文件路径，如果文件不存在则返回None
+        """
+        try:
+            webp_path = self.storage_dir / project_id / "images" / f"page_{page_number:03d}.webp"
+
+            if webp_path.exists():
+                return webp_path
+            return None
+        except Exception as e:
+            logger.error(f"获取WebP图片路径失败: {str(e)}")
+            return None
+
+    def convert_png_to_webp(self, project_id: str, page_number: int) -> Optional[Path]:
+        """将PNG图片转换为WebP格式（向后兼容）
+
+        Args:
+            project_id: 项目ID
+            page_number: 页码（从1开始）
+
+        Returns:
+            生成的WebP图片文件路径，如果PNG不存在则返回None
+        """
+        try:
+            png_path = self.get_image_path(project_id, page_number)
+            if not png_path:
+                logger.warning(f"PNG图片不存在: project={project_id}, page={page_number}")
+                return None
+
+            webp_path = self.storage_dir / project_id / "images" / f"page_{page_number:03d}.webp"
+
+            with Image.open(png_path) as image:
+                webp_image = image.convert("RGB")
+                webp_image.save(webp_path.as_posix(), "WEBP", quality=85, optimize=True)
+
+            logger.info(f"已转换PNG到WebP: {png_path} -> {webp_path}")
+            return webp_path
+        except Exception as e:
+            logger.error(f"PNG转WebP失败: {str(e)}")
+            return None
+
     def convert_pdf_to_images(self, project_id: str, pdf_path: str) -> List[AppImage]:
         """将PDF文件转换为图片
-        
+
         Args:
             project_id: 项目ID
             pdf_path: PDF文件路径
-            
+
         Returns:
             生成的图片对象列表
-            
+
         Raises:
             Exception: 转换失败时抛出异常
         """
         try:
-            # 转换为Path对象
             pdf_path: Path = Path(pdf_path)
-            
-            # 创建图片存储目录
+
             images_dir = self.storage_dir / project_id / "images"
             ensure_directory(images_dir)
-            
-            # 使用pdf2image转换PDF为图片
+
             images = convert_from_path(
                 pdf_path.as_posix(),
                 dpi=72,
                 fmt="png",
-                thread_count=8  # 利用8个线程并行处理
+                thread_count=8
             )
-            
+
             image_objects = []
-            
-            # 遍历每一页图片
+
             for i, image in enumerate(images, 1):
-                # 格式化页码为3位数字，确保排序正确
                 formatted_page_num = str(i).zfill(3)
-                
-                # 生成图片文件路径
-                image_path = images_dir / f"page_{formatted_page_num}.png"
-                
-                # 保存图片
-                image.save(image_path.as_posix(), "PNG")
-                
-                # 创建图片对象
+
+                png_path = images_dir / f"page_{formatted_page_num}.png"
+                webp_path = images_dir / f"page_{formatted_page_num}.webp"
+
+                image.save(png_path.as_posix(), "PNG")
+
+                webp_image = image.convert("RGB")
+                webp_image.save(webp_path.as_posix(), "WEBP", quality=85, optimize=True)
+
                 image_obj = AppImage(
                     id=generate_unique_id(),
-                    img_path=str(image_path.relative_to(self.storage_dir))
+                    img_path=str(png_path.relative_to(self.storage_dir))
                 )
-                
+
                 image_objects.append(image_obj)
-                logger.info(f"已保存页面 {i} 到 {image_path}")
-            
+                logger.info(f"已保存页面 {i}: PNG -> {png_path}, WebP -> {webp_path}")
+
             logger.info(f"PDF转换完成，共生成 {len(image_objects)} 张图片")
             return image_objects
             

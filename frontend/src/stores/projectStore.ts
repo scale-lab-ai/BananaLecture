@@ -14,30 +14,26 @@ import {
 import { getScript } from '../services/scriptService';
 
 interface ProjectState {
-  // 项目列表
   projects: Project[];
   isLoading: boolean;
   error: string | null;
-  
-  // 当前选中的项目
+
   currentProject: Project | null;
   isCurrentLoading: boolean;
   currentError: string | null;
-  
-  // 当前页面的脚本
+
   currentPageScript: Script | null;
   isScriptLoading: boolean;
   scriptError: string | null;
-  
-  // 当前页面的图片
+
   currentPageImage: string | null;
   isImageLoading: boolean;
   imageError: string | null;
-  
-  // 当前页码
+
   currentPageNumber: number;
-  
-  // 项目操作状态
+
+  imageCache: Map<string, string>;
+
   isCreatingProject: boolean;
   isUpdatingProject: boolean;
   isDeletingProject: boolean;
@@ -86,7 +82,10 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   
   // 当前页码
   currentPageNumber: 1,
-  
+
+  // 图像缓存
+  imageCache: new Map<string, string>(),
+
   // 项目操作状态
   isCreatingProject: false,
   isUpdatingProject: false,
@@ -279,17 +278,30 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   
   // 获取图片
   getImage: async (projectId: string, pageNumber: number) => {
+    const cacheKey = `${projectId}-${pageNumber}`;
+    const { imageCache } = get();
+
+    if (imageCache.has(cacheKey)) {
+      set({
+        currentPageImage: imageCache.get(cacheKey) || null,
+        isImageLoading: false
+      });
+      return;
+    }
+
     set({ isImageLoading: true, imageError: null });
     try {
       const data = await getImage(projectId, pageNumber);
-      set({ 
-        currentPageImage: data.imageUrl, 
-        isImageLoading: false
+      imageCache.set(cacheKey, data.imageUrl);
+      set({
+        currentPageImage: data.imageUrl,
+        isImageLoading: false,
+        imageCache
       });
     } catch (error) {
-      set({ 
-        imageError: error instanceof Error ? error.message : '获取图片失败', 
-        isImageLoading: false 
+      set({
+        imageError: error instanceof Error ? error.message : '获取图片失败',
+        isImageLoading: false
       });
     }
   },
@@ -313,10 +325,9 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   
   // 设置当前页码
   setCurrentPage: (pageNumber: number) => {
-    set({ 
+    set({
       currentPageNumber: pageNumber,
-      currentPageScript: null,
-      currentPageImage: null
+      currentPageScript: null
     });
   },
   

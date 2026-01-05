@@ -63,28 +63,30 @@ async def get_image_file(
     project_service: ProjectService = Depends(get_project_service),
     pdf_service: PDFService = Depends(get_pdf_service)
 ):
-    """获取指定项目的指定页面图片文件"""
-    # 检查项目是否存在
+    """获取指定项目的指定页面WebP压缩图片（用于前端传输）
+    
+    向后兼容：如果WebP不存在，会自动从PNG转换生成
+    """
     project = project_service.get_project(project_id)
     if not project:
         raise HTTPException(status_code=404, detail="项目不存在")
-    
-    # 检查项目是否已转换PDF为图片
+
     if not project.images or len(project.images) == 0:
         raise HTTPException(status_code=400, detail="项目未转换PDF为图片")
-    
-    # 检查页码是否有效
+
     if page_number < 1 or page_number > len(project.images):
         raise HTTPException(status_code=400, detail=f"页码无效，有效范围为1-{len(project.images)}")
-    
-    # 使用服务层方法获取图片路径
-    image_path = pdf_service.get_image_path(project_id, page_number)
-    if not image_path:
-        raise HTTPException(status_code=404, detail="图片文件不存在")
-    
-    # 返回图片文件
+
+    webp_path = pdf_service.get_webp_image_path(project_id, page_number)
+
+    if not webp_path:
+        webp_path = pdf_service.convert_png_to_webp(project_id, page_number)
+        
+        if not webp_path:
+            raise HTTPException(status_code=404, detail="图片文件不存在")
+
     return FileResponse(
-        path=str(image_path),
-        media_type="image/png",
-        filename=f"page_{page_number:03d}.png"
+        path=str(webp_path),
+        media_type="image/webp",
+        filename=f"page_{page_number:03d}.webp"
     )
