@@ -418,6 +418,69 @@ class ScriptService:
             logger.error(f"删除对话项失败: {str(e)}")
             return None
     
+    def move_dialogue_by_id(self, project_id: str, page_number: int, dialogue_id: str, direction: str) -> Optional[DialogueItem]:
+        """根据对话ID移动对话项
+        
+        Args:
+            project_id: 项目ID
+            page_number: 页码
+            dialogue_id: 对话项ID
+            direction: 移动方向，'up'表示上移，'down'表示下移
+            
+        Returns:
+            被移动的对话项对象，如果失败则返回None
+        """
+        try:
+            # 获取现有脚本
+            script = self.get_script(project_id, page_number)
+            if not script:
+                return None
+            
+            # 查找对话项索引
+            current_index = -1
+            for i, dialogue in enumerate(script.dialogues):
+                if dialogue.id == dialogue_id:
+                    current_index = i
+                    break
+            
+            if current_index == -1:
+                return None
+            
+            # 检查移动方向的有效性
+            if direction == 'up':
+                if current_index == 0:
+                    return script.dialogues[current_index]
+                # 交换位置
+                script.dialogues[current_index], script.dialogues[current_index - 1] = \
+                    script.dialogues[current_index - 1], script.dialogues[current_index]
+            elif direction == 'down':
+                if current_index == len(script.dialogues) - 1:
+                    return script.dialogues[current_index]
+                # 交换位置
+                script.dialogues[current_index], script.dialogues[current_index + 1] = \
+                    script.dialogues[current_index + 1], script.dialogues[current_index]
+            else:
+                return None
+            
+            # 更新移动项的updated_at时间戳
+            script.dialogues[current_index].updated_at = datetime.now()
+            if direction == 'up':
+                script.dialogues[current_index - 1].updated_at = datetime.now()
+            else:
+                script.dialogues[current_index + 1].updated_at = datetime.now()
+            
+            # 保存更新后的脚本
+            self._save_script(project_id, script)
+            
+            # 重新生成页面音频
+            self._regenerate_page_audio_after_move(project_id, page_number)
+            
+            return script.dialogues[current_index if direction == 'up' else current_index - 1]
+            
+        except Exception as e:
+            logger.error(f"移动对话项失败: {str(e)}")
+            return None
+    
     def _delete_dialogue_audio(self, project_id: str, page_number: int, dialogue_id: str) -> None:
         """删除对话项对应的音频文件
         
@@ -437,6 +500,72 @@ class ScriptService:
             
         except Exception as e:
             logger.error(f"删除对话音频文件失败: {str(e)}")
+    
+    def _regenerate_page_audio_after_move(self, project_id: str, page_number: int) -> None:
+        """移动对话项后重新合并页面音频文件
+        
+        Args:
+            project_id: 项目ID
+            page_number: 页码
+        """
+        try:
+            # 导入AudioService
+            from app.services.audio_service import AudioService
+            
+            # 获取脚本文件
+            scripts_dir = self.storage_dir / project_id / "scripts"
+            script_file = scripts_dir / f"script_{page_number:03d}.json"
+            
+            if not script_file.exists():
+                logger.warning(f"脚本文件不存在: {script_file}")
+                return
+            
+            # 读取脚本文件
+            with open(script_file, 'r', encoding='utf-8') as f:
+                script_json = f.read()
+            
+            # 解析脚本
+            script = Script.model_validate_json(script_json)
+            
+            # 创建页面音频目录
+            page_audio_dir = self.storage_dir / project_id / "audio" / f"page_{page_number:03d}"
+            
+            audio_files = []
+            
+            # 开场音频路径
+            project_root = Path(__file__).parent.parent.parent
+            begin_audio_path = project_root / "backend" / "assets" / "cues.mp3"
+            
+            # 如果是第一页，先添加begin.mp3
+            if page_number == 1 and begin_audio_path.exists():
+                begin_audio_file = page_audio_dir / "beigin.mp3"
+                if begin_audio_file.exists():
+                    audio_files.append(str(begin_audio_file))
+            
+            # 按新顺序收集所有已存在的对话音频文件
+            for dialogue in script.dialogues:
+                dialogue_audio_path = page_audio_dir / f"{dialogue.id}.mp3"
+                if dialogue_audio_path.exists():
+                    audio_files.append(str(dialogue_audio_path))
+            
+            # 如果有音频文件，合并它们
+            if audio_files:
+                # 创建音频目录
+                audio_dir = self.storage_dir / project_id / "audio"
+                
+                # 页面音频文件路径
+                page_output_path = audio_dir / f"page_{page_number:03d}.mp3"
+                
+                audio_service = AudioService()
+                
+                # 直接调用同步函数
+                audio_service.merge_audio_files(audio_files, str(page_output_path))
+                logger.info(f"已重新合并页面 {page_number} 的音频: {page_output_path}")
+            else:
+                logger.warning(f"页面 {page_number} 没有找到任何音频文件")
+                
+        except Exception as e:
+            logger.error(f"重新合并页面音频失败: {str(e)}")
     
     def _regenerate_page_audio_after_deletion(self, project_id: str, page_number: int) -> None:
         """删除对话项后重新合并页面音频文件

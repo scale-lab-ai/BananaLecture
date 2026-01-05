@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import { Card, Button, Space, Typography, message, Modal, Form, Select, Input, Spin } from 'antd';
-import { PlayCircleOutlined, SoundOutlined, PlusOutlined, EditOutlined, DeleteOutlined, ReloadOutlined } from '@ant-design/icons';
+import { PlayCircleOutlined, SoundOutlined, PlusOutlined, EditOutlined, DeleteOutlined, ReloadOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { useProjectStore } from '../../stores';
 import { useTaskStore } from '../../stores/taskStore';
-import { generateScript, addDialogue, updateDialogue, deleteDialogue } from '../../services/scriptService';
+import { generateScript, addDialogue, updateDialogue, deleteDialogue, moveDialogue } from '../../services/scriptService';
 import { generatePageAudio, getPageAudio, generateDialogueAudio, getDialogueAudio } from '../../services/audioService';
 import type { DialogueItem, DialogueRole, EmotionType, SpeechSpeed } from '../../types/script';
 import type { AudioPlayerState } from '../../types/audio';
@@ -563,6 +563,22 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
     }
   };
   
+  // 移动对话
+  const handleMoveDialogue = async (dialogueId: string, direction: 'up' | 'down') => {
+    try {
+      await moveDialogue(projectId, pageNumber, dialogueId, direction);
+      message.success(`对话已${direction === 'up' ? '上移' : '下移'}`);
+      
+      // 重新获取脚本
+      getScript(projectId, pageNumber).catch(error => {
+        console.error('获取脚本失败:', error);
+      });
+    } catch (error) {
+      console.error('移动对话失败:', error);
+      message.error('移动对话失败');
+    }
+  };
+  
   return (
     <div className="page-view">
       <div className="page-content" style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
@@ -635,12 +651,28 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
               </div>
             ) : (currentPageScript && currentPageScript.dialogues.length > 0 ? (
               <div className="dialogue-list" style={{ height: '350px', overflowY: 'auto' }}>
-                {currentPageScript.dialogues.map(dialogue => (
+                {currentPageScript.dialogues.map((dialogue, index) => (
                   <div key={dialogue.id} className="dialogue-item">
                     <div className="dialogue-header">
                       <Text strong>{dialogue.role}</Text>
                       <Text type="secondary">[{dialogue.emotion}] [{dialogue.speed}]</Text>
                       <div className="dialogue-actions">
+                        <Button
+                          type="text"
+                          size="small"
+                          icon={<ArrowUpOutlined />}
+                          onClick={() => handleMoveDialogue(dialogue.id, 'up')}
+                          disabled={index === 0}
+                          title="上移"
+                        />
+                        <Button
+                          type="text"
+                          size="small"
+                          icon={<ArrowDownOutlined />}
+                          onClick={() => handleMoveDialogue(dialogue.id, 'down')}
+                          disabled={index === currentPageScript.dialogues.length - 1}
+                          title="下移"
+                        />
                         <Button
                           type="text"
                           size="small"

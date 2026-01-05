@@ -183,6 +183,10 @@
   gap: 4px;
 }
 
+.dialogue-actions .ant-btn[disabled] {
+  opacity: 0.4;
+}
+
 .dialogue-content {
   margin-bottom: 8px;
   line-height: 1.5;

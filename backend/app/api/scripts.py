@@ -56,6 +56,11 @@ class DialogueAddRequest(BaseModel):
     speed: str
 
 
+class DialogueMoveRequest(BaseModel):
+    """移动对话项请求"""
+    direction: str = Field(..., pattern="^(up|down)$", description="移动方向：up-上移，down-下移")
+
+
 class ScriptBatchGenerateResponse(BaseModel):
     """批量生成脚本响应"""
     message: str
@@ -330,3 +335,29 @@ async def delete_dialogue(
         return DialogueDeleteResponse(message="success", dialogue=dialogue)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"删除对话项失败: {str(e)}")
+
+
+@dialogue_router.put("/{project_id}/{page_number}/{dialogue_id}/move", response_model=DialogueResponse)
+async def move_dialogue(
+    project_id: str,
+    page_number: int,
+    dialogue_id: str,
+    request: DialogueMoveRequest,
+    project_service: ProjectService = Depends(get_project_service),
+    script_service: ScriptService = Depends(get_script_service)
+):
+    """移动对话项"""
+    # 检查项目是否存在
+    project = project_service.get_project(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="项目不存在")
+    
+    try:
+        # 移动对话项
+        dialogue = script_service.move_dialogue_by_id(project_id, page_number, dialogue_id, request.direction)
+        if not dialogue:
+            raise HTTPException(status_code=404, detail="对话项不存在或移动失败")
+        
+        return DialogueResponse(message="success", dialogue=dialogue)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"移动对话项失败: {str(e)}")

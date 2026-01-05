@@ -8,7 +8,7 @@
 
 *将静态PPT转换为动态有声Lecture，让课堂更有趣*
 
-[![Version](https://img.shields.io/badge/version-v0.1.1-4CAF50.svg?style=for-the-badge&logo=python&logoColor=white)](https://github.com/ChengJiale150/BananaLecture)
+[![Version](https://img.shields.io/badge/version-v0.1.2-4CAF50.svg?style=for-the-badge&logo=python&logoColor=white)](https://github.com/ChengJiale150/BananaLecture)
 [![Docker](https://img.shields.io/badge/Docker-Build-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/chengjiale150/bananalecture)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&logo=open-source-initiative&logoColor=white)](https://opensource.org/licenses/MIT)
 

@@ -61,3 +61,13 @@ export const deleteDialogue = async (
 ): Promise<DeleteDialogueResponse> => {
   return api.delete(`/dialogues/${projectId}/${pageNumber}/${dialogueId}`);
 };
+
+// 移动对话项
+export const moveDialogue = async (
+  projectId: string,
+  pageNumber: number,
+  dialogueId: string,
+  direction: string
+): Promise<UpdateDialogueResponse> => {
+  return api.put(`/dialogues/${projectId}/${pageNumber}/${dialogueId}/move`, { direction });
+};
