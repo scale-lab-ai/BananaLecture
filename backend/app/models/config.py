@@ -26,8 +26,8 @@ class RoleConfigResponse(BaseModel):
     """角色配置响应模型"""
     # 硬编码的角色映射，符合PRD要求
     旁白: str = Field(default="Chinese (Mandarin)_Male_Announcer", description="旁白角色声音")
-    大雄: str = Field(default="ppt2audio_daxiong", description="大雄角色声音")
-    哆啦A梦: str = Field(default="ppt2audio_duolaameng", description="哆啦A梦角色声音")
+    大雄: str = Field(default="Chinese (Mandarin)_ExplorativeGirl", description="大雄角色声音")
+    哆啦A梦: str = Field(default="Chinese (Mandarin)_Pure-hearted_Boy", description="哆啦A梦角色声音")
     其他男声: str = Field(default="Chinese (Mandarin)_Pure-hearted_Boy", description="其他男声角色声音")
     其他女声: str = Field(default="Chinese (Mandarin)_ExplorativeGirl", description="其他女声角色声音")
     其他: str = Field(default="Chinese (Mandarin)_Radio_Host", description="其他角色声音")
@@ -37,8 +37,8 @@ class RoleConfigUpdateRequest(BaseModel):
     """角色配置更新请求模型"""
     # 硬编码的角色映射，符合PRD要求
     旁白: str = Field(default="Chinese (Mandarin)_Male_Announcer", description="旁白角色声音")
-    大雄: str = Field(default="ppt2audio_daxiong", description="大雄角色声音")
-    哆啦A梦: str = Field(default="ppt2audio_duolaameng", description="哆啦A梦角色声音")
+    大雄: str = Field(default="Chinese (Mandarin)_ExplorativeGirl", description="大雄角色声音")
+    哆啦A梦: str = Field(default="Chinese (Mandarin)_Pure-hearted_Boy", description="哆啦A梦角色声音")
     其他男声: str = Field(default="Chinese (Mandarin)_Pure-hearted_Boy", description="其他男声角色声音")
     其他女声: str = Field(default="Chinese (Mandarin)_ExplorativeGirl", description="其他女声角色声音")
     其他: str = Field(default="Chinese (Mandarin)_Radio_Host", description="其他角色声音")

@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List, Optional, Dict, Any, Literal
 import logging
 from datetime import datetime
+import asyncio
 
 from app.models import Script, DialogueItem, Project, Image
 from app.utils.file_utils import generate_unique_id, ensure_directory
@@ -72,6 +73,37 @@ class ScriptService:
 1. 道具为特殊role，当且仅当哆啦A梦首次掏出道具时，添加角色为道具内容为道具名称的对话，后续出现时无需重复添加(**仅添加一次即可**)
 2. 图片中所有出现的公式与数学符号均转化为Latex格式,并都用$$包裹,如$$E = m \\times c^2$$与$$1-\\epsilon$$""",
         )
+    
+    async def _retry_with_exponential_backoff(self, coro, max_retries: int = 3, base_delay: float = 5.0):
+        """带指数退避的重试机制
+        
+        Args:
+            coro: 异步协程函数
+            max_retries: 最大重试次数，默认为3
+            base_delay: 基础延迟时间（秒），默认为5
+            
+        Returns:
+            协程执行结果
+            
+        Raises:
+            Exception: 重试次数耗尽后抛出异常
+        """
+        last_exception = None
+        
+        for attempt in range(1, max_retries + 1):
+            try:
+                return await coro
+            except Exception as e:
+                last_exception = e
+                logger.warning(f"第 {attempt} 次尝试失败: {str(e)}")
+                
+                if attempt < max_retries:
+                    delay = base_delay
+                    logger.info(f"等待 {delay} 秒后进行第 {attempt + 1} 次重试...")
+                    await asyncio.sleep(delay)
+                else:
+                    logger.error(f"重试次数耗尽，最终失败: {str(e)}")
+                    raise
     
     def _encode_image(self, image_path: Path) -> bytes:
         """
@@ -173,13 +205,16 @@ class ScriptService:
             image_bytes = self._encode_image(image_file)
             
             # 使用AI代理生成对话
-            result = await self.agent.run([
-                prompt,
-                BinaryContent(
-                    media_type="image/png",
-                    data=image_bytes
-                )
-            ])
+            async def run_agent():
+                return await self.agent.run([
+                    prompt,
+                    BinaryContent(
+                        media_type="image/png",
+                        data=image_bytes
+                    )
+                ])
+            
+            result = await self._retry_with_exponential_backoff(run_agent)
             
             # 获取对话列表
             dialogues_data: List[DialogueItemAI] = result.output

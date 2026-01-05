@@ -140,42 +140,85 @@ class AudioService:
         
         return payload
     
-    async def _request_audio(self, payload: Dict[str, Any]) -> bytes:
+    def _is_api_response_valid(self, result: Dict[str, Any]) -> tuple:
+        """检查API响应是否有效
+        
+        Args:
+            result: API响应结果
+            
+        Returns:
+            (is_valid, error_message) 元组
+        """
+        if "base_resp" not in result:
+            return False, "API响应中缺少'base_resp'字段"
+        
+        base_resp = result["base_resp"]
+        status_code = base_resp.get("status_code", -1)
+        status_msg = base_resp.get("status_msg", "")
+        
+        if status_code != 0:
+            return False, f"API返回错误码 {status_code}: {status_msg}"
+        
+        if "data" not in result or result["data"] is None:
+            return False, "API响应中缺少'data'字段或data为null"
+        
+        if "audio" not in result["data"]:
+            return False, "API响应中缺少'audio'字段"
+        
+        return True, ""
+    
+    async def _request_audio(self, payload: Dict[str, Any]) -> Optional[bytes]:
         """发送请求获取音频数据
         
         Args:
             payload: 请求payload
             
         Returns:
-            音频字节数据
-            
-        Raises:
-            ValueError: API响应错误或音频数据解码失败
+            音频字节数据，失败时返回None
         """
-        try:
-            response = await self.client.post(self.url, json=payload)
-            response.raise_for_status()
-            result = response.json()
-            
-            # 检查API响应结构
-            if "data" not in result:
-                raise ValueError(f"API响应中缺少'data'字段: {result}")
-            
-            if "audio" not in result["data"]:
-                raise ValueError(f"API响应中缺少'audio'字段: {result}")
-            
-            # 解码音频数据
+        max_retries = 3
+        base_delay = 5
+        
+        for attempt in range(1, max_retries + 1):
             try:
+                response = await self.client.post(self.url, json=payload)
+                response.raise_for_status()
+                result = response.json()
+                
+                is_valid, error_message = self._is_api_response_valid(result)
+                if not is_valid:
+                    logger.warning(f"API响应验证失败（第{attempt}次尝试）: {error_message}")
+                    
+                    if attempt < max_retries:
+                        await asyncio.sleep(base_delay)
+                        continue
+                    else:
+                        logger.error(f"重试次数耗尽，API响应验证失败: {error_message}")
+                        return None
+                
                 audio_bytes = binascii.unhexlify(result["data"]["audio"])
-            except (binascii.Error, ValueError) as e:
-                raise ValueError(f"音频数据解码失败: {e}, 原始数据: {result['data'].get('audio', 'N/A')[:100]}")
-
-            # 避免请求过快
-            await asyncio.sleep(5)
-            return audio_bytes
-        except httpx.HTTPError as e:
-            logger.error(f"HTTP请求失败: {str(e)}")
-            raise Exception(f"HTTP请求失败: {str(e)}")
+                await asyncio.sleep(5)
+                return audio_bytes
+                
+            except httpx.HTTPError as e:
+                logger.warning(f"HTTP请求失败（第{attempt}次尝试）: {str(e)}")
+                
+                if attempt < max_retries:
+                    await asyncio.sleep(base_delay)
+                else:
+                    logger.error(f"重试次数耗尽，HTTP请求最终失败: {str(e)}")
+                    return None
+                    
+            except (binascii.Error, ValueError, KeyError) as e:
+                logger.warning(f"音频数据处理失败（第{attempt}次尝试）: {str(e)}")
+                
+                if attempt < max_retries:
+                    await asyncio.sleep(base_delay)
+                else:
+                    logger.error(f"重试次数耗尽，音频数据处理最终失败: {str(e)}")
+                    return None
+        
+        return None
     
     async def _merge_audio_with_daoju(self, audio_bytes: bytes) -> bytes:
         """将音频与道具音效合并
@@ -239,6 +282,9 @@ class AudioService:
             
             # 生成音频
             audio_bytes = await self._request_audio(payload)
+            
+            if audio_bytes is None:
+                raise Exception("音频生成失败，API请求重试次数耗尽")
             
             # 如果是道具，添加道具音效
             if is_daoju:

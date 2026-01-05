@@ -70,8 +70,8 @@ class ConfigService:
         """获取默认角色配置"""
         return {
             "旁白": "Chinese (Mandarin)_Male_Announcer",
-            "大雄": "ppt2audio_daxiong",
-            "哆啦A梦": "ppt2audio_duolaameng",
+            "大雄": "Chinese (Mandarin)_ExplorativeGirl",
+            "哆啦A梦": "Chinese (Mandarin)_Pure-hearted_Boy",
             "其他男声": "Chinese (Mandarin)_Pure-hearted_Boy",
             "其他女声": "Chinese (Mandarin)_ExplorativeGirl",
             "其他": "Chinese (Mandarin)_Radio_Host"
