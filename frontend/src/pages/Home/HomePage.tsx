@@ -5,7 +5,7 @@ import { useProjectStore } from '../../stores';
 import { useTaskStore } from '../../stores/taskStore';
 import { batchGenerateScript } from '../../services/scriptService';
 import { batchGenerateAudio } from '../../services/audioService';
-import { downloadPpt } from '../../services/projectService';
+import { downloadPpt, downloadVideo } from '../../services/projectService';
 import PageView from '../Project/PageView';
 import type { PageViewRef } from '../Project/PageView';
 import '../../styles/homePage.css';
@@ -41,6 +41,8 @@ const HomePage: React.FC = () => {
   
   // 导出PPT状态
   const [exportingPpt, setExportingPpt] = useState(false);
+  // 导出视频状态
+  const [exportingVideo, setExportingVideo] = useState(false);
   const [currentStep, setCurrentStep] = useState(0); // 0: 未开始, 1: 切分页面, 2: 生成口播稿, 3: 生成音频, 4: 完成
   const [overallProgress, setOverallProgress] = useState(0);
   
@@ -313,12 +315,10 @@ const HomePage: React.FC = () => {
     try {
       const blob = await downloadPpt(currentProject.id);
       
-      // 创建下载链接
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       
-      // 使用项目名称作为文件名，替换扩展名为.pptx
       const fileName = currentProject.name.replace(/\.[^/.]+$/, '') + '.pptx';
       link.download = fileName;
       
@@ -334,6 +334,38 @@ const HomePage: React.FC = () => {
       message.error(`导出PPT失败: ${errorMessage}`);
     } finally {
       setExportingPpt(false);
+    }
+  };
+
+  const handleExportVideo = async () => {
+    if (!currentProject) {
+      message.error('请先选择一个项目');
+      return;
+    }
+    
+    setExportingVideo(true);
+    try {
+      const blob = await downloadVideo(currentProject.id);
+      
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      const fileName = currentProject.name.replace(/\.[^/.]+$/, '') + '.mp4';
+      link.download = fileName;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      message.success('视频导出成功');
+    } catch (error) {
+      console.error('导出视频失败:', error);
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      message.error(`导出视频失败: ${errorMessage}`);
+    } finally {
+      setExportingVideo(false);
     }
   };
 
@@ -418,7 +450,7 @@ const HomePage: React.FC = () => {
                   type="primary" 
                   onClick={handleOneClickConvert}
                   loading={isConvertingAll}
-                  disabled={converting || scriptTaskId !== null || audioTaskId !== null}
+                  disabled={converting || scriptTaskId !== null || audioTaskId !== null || exportingPpt || exportingVideo}
                   style={{ fontSize: '16px', padding: '10px 32px', background: '#1890ff', border: 'none', borderRadius: '24px', boxShadow: '0 4px 12px rgba(24, 144, 255, 0.3)', fontWeight: 'bold' }}
                 >
                   ✨ 一键生成 ✨
@@ -428,7 +460,7 @@ const HomePage: React.FC = () => {
                   type="default" 
                   icon={<ExportOutlined />} 
                   onClick={handleExportPpt}
-                  disabled={!currentProject.images || currentProject.images.length === 0 || isConvertingAll || converting || scriptTaskId !== null || audioTaskId !== null}
+                  disabled={!currentProject.images || currentProject.images.length === 0 || isConvertingAll || converting || scriptTaskId !== null || audioTaskId !== null || exportingVideo}
                   loading={exportingPpt}
                   style={{ fontSize: '16px', padding: '10px 32px', border: '2px solid #FF8C42', color: '#FF8C42', fontWeight: 'bold', borderRadius: '24px', background: '#FFFFFF' }}
                 >
@@ -448,7 +480,7 @@ const HomePage: React.FC = () => {
                             icon={<FileTextOutlined />} 
                             onClick={handleConvertPdf}
                             loading={converting}
-                            disabled={isConvertingAll || scriptTaskId !== null || audioTaskId !== null}
+                            disabled={isConvertingAll || scriptTaskId !== null || audioTaskId !== null || exportingPpt || exportingVideo}
                             block
                           >
                             切分页面
@@ -462,7 +494,7 @@ const HomePage: React.FC = () => {
                             type="default" 
                             icon={<FileTextOutlined />} 
                             onClick={handleGenerateScript}
-                            disabled={!currentProject.images || currentProject.images.length === 0 || isConvertingAll || converting || scriptTaskId !== null || audioTaskId !== null}
+                            disabled={!currentProject.images || currentProject.images.length === 0 || isConvertingAll || converting || scriptTaskId !== null || audioTaskId !== null || exportingPpt || exportingVideo}
                             loading={scriptTaskId !== null}
                             block
                           >
@@ -477,11 +509,26 @@ const HomePage: React.FC = () => {
                             type="default" 
                             icon={<SoundOutlined />} 
                             onClick={handleGenerateAudio}
-                            disabled={!currentProject.images || currentProject.images.length === 0 || isConvertingAll || converting || scriptTaskId !== null || audioTaskId !== null}
+                            disabled={!currentProject.images || currentProject.images.length === 0 || isConvertingAll || converting || scriptTaskId !== null || audioTaskId !== null || exportingPpt || exportingVideo}
                             loading={audioTaskId !== null}
                             block
                           >
                             一键生成音频
+                          </Button>
+                        ),
+                      },
+                      {
+                        key: '4',
+                        label: (
+                          <Button 
+                            type="default" 
+                            icon={<ExportOutlined />} 
+                            onClick={handleExportVideo}
+                            disabled={!currentProject.images || currentProject.images.length === 0 || isConvertingAll || converting || scriptTaskId !== null || audioTaskId !== null || exportingPpt || exportingVideo}
+                            loading={exportingVideo}
+                            block
+                          >
+                            导出视频
                           </Button>
                         ),
                       },
@@ -503,7 +550,7 @@ const HomePage: React.FC = () => {
                 <Button 
                   icon={<ReloadOutlined />} 
                   onClick={handleRefresh}
-                  disabled={isConvertingAll}
+                  disabled={isConvertingAll || exportingPpt || exportingVideo}
                   size="middle"
                   style={{ fontSize: '14px', padding: '8px 16px', borderRadius: '20px', border: '2px solid #52C41A', color: '#52C41A', fontWeight: '500', background: '#FFFFFF' }}
                 >

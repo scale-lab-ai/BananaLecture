@@ -10,6 +10,8 @@ from PIL import Image
 from app.utils.file_utils import ensure_directory_exists, get_file_size
 from app.services.project_service import ProjectService
 
+from moviepy.editor import ImageClip, AudioFileClip, concatenate_videoclips, CompositeVideoClip
+
 logger = logging.getLogger(__name__)
 
 
@@ -27,8 +29,7 @@ class ExportService:
         else:
             self.storage_dir = Path(storage_dir)
         
-        # 确保存储目录存在
-        self.storage_dir.mkdir(parents=True, exist_ok=True)
+        ensure_directory_exists(self.storage_dir)
     
     def set_16_9_slide_size(self, prs: Presentation):
         """设置PPT为16:9比例（标准宽高：13.333英寸 × 7.5英寸）"""
@@ -244,3 +245,145 @@ class ExportService:
         except Exception as e:
             logger.error(f"删除PPT文件失败: {str(e)}")
             return False
+
+    def export_video(self, project_id: str, output_filename: Optional[str] = None, fps: int = 24) -> Path:
+        """导出视频（将图片与音频合并为MP4视频）
+        
+        Args:
+            project_id: 项目ID
+            output_filename: 输出文件名，如果为None则使用项目名
+            fps: 视频帧率，默认为24fps
+            
+        Returns:
+            导出的视频文件路径
+            
+        Raises:
+            ValueError: 当项目不存在或缺少必要文件时抛出异常
+        """
+        project_service = ProjectService()
+        project = project_service.get_project(project_id)
+        if not project:
+            raise ValueError(f"项目不存在: {project_id}")
+        
+        if not project.images:
+            raise ValueError("项目未转换PDF为图片")
+        
+        img_files = self.get_sorted_image_files(project_id)
+        audio_files = self.get_sorted_audio_files(project_id)
+        
+        if not img_files:
+            raise ValueError("项目图片目录为空")
+        
+        if not audio_files:
+            logger.warning(f"项目 {project_id} 没有音频文件，将只导出图片为视频")
+        
+        video_clips = []
+        
+        if audio_files and len(audio_files) == len(img_files):
+            for i, (img_path, audio_path) in enumerate(zip(img_files, audio_files)):
+                try:
+                    audio_clip = AudioFileClip(str(audio_path))
+                    
+                    img_clip = ImageClip(str(img_path))
+                    
+                    img_clip = img_clip.set_duration(audio_clip.duration)
+                    img_clip = img_clip.set_audio(audio_clip)
+                    
+                    video_clips.append(img_clip)
+                    logger.info(f"已处理第 {i+1} 页: {img_path.name} (音频时长: {audio_clip.duration:.2f}秒)")
+                except Exception as e:
+                    logger.warning(f"处理第 {i+1} 页失败: {str(e)}")
+                    continue
+        else:
+            if audio_files:
+                min_count = min(len(img_files), len(audio_files))
+                logger.warning(f"图片数量({len(img_files)})与音频数量({len(audio_files)})不匹配，只处理前{min_count}页")
+                
+                for i in range(min_count):
+                    try:
+                        audio_path = audio_files[i]
+                        audio_clip = AudioFileClip(str(audio_path))
+                        
+                        img_clip = ImageClip(str(img_files[i]))
+                        img_clip = img_clip.set_duration(audio_clip.duration)
+                        img_clip = img_clip.set_audio(audio_clip)
+                        
+                        video_clips.append(img_clip)
+                        logger.info(f"已处理第 {i+1} 页")
+                    except Exception as e:
+                        logger.warning(f"处理第 {i+1} 页失败: {str(e)}")
+                        continue
+            else:
+                logger.info("没有音频文件，为每张图片创建3秒的静态视频")
+                for i, img_path in enumerate(img_files):
+                    try:
+                        img_clip = ImageClip(str(img_path)).set_duration(3)
+                        video_clips.append(img_clip)
+                        logger.info(f"已处理第 {i+1} 页: {img_path.name}")
+                    except Exception as e:
+                        logger.warning(f"处理第 {i+1} 页失败: {str(e)}")
+                        continue
+        
+        if not video_clips:
+            raise ValueError("没有可用的图片或音频来生成视频")
+        
+        if len(video_clips) == 1:
+            final_video = video_clips[0]
+        else:
+            try:
+                final_video = concatenate_videoclips(video_clips, method="compose")
+            except Exception as e:
+                logger.warning(f"使用compose方法拼接失败，尝试使用chain方法: {str(e)}")
+                final_video = concatenate_videoclips(video_clips, method="chain")
+        
+        if output_filename is None:
+            safe_name = "".join(c for c in project.name if c.isalnum() or c in (' ', '-', '_')).rstrip()
+            output_filename = f"{safe_name}.mp4"
+        
+        if not output_filename.endswith('.mp4'):
+            output_filename += '.mp4'
+        
+        project_dir = self.storage_dir / project_id
+        ensure_directory_exists(project_dir)
+        
+        output_path = project_dir / output_filename
+        
+        try:
+            final_video.write_videofile(
+                str(output_path),
+                fps=fps,
+                codec='libx264',
+                audio_codec='aac',
+                preset='medium',
+                threads=4,
+                logger=None
+            )
+            logger.info(f"视频已导出完成！保存至 {output_path}")
+        finally:
+            final_video.close()
+            for clip in video_clips:
+                try:
+                    clip.close()
+                except Exception:
+                    pass
+        
+        return output_path
+
+    def get_video_file_path(self, project_id: str, filename: Optional[str] = None) -> Optional[Path]:
+        """获取视频文件路径
+        
+        Args:
+            project_id: 项目ID
+            filename: 视频文件名，如果为None则查找项目目录下的第一个mp4文件
+            
+        Returns:
+            视频文件路径，如果不存在则返回None
+        """
+        project_dir = self.storage_dir / project_id
+        
+        if filename:
+            video_path = project_dir / filename
+            return video_path if video_path.exists() else None
+        else:
+            video_files = list(project_dir.glob("*.mp4"))
+            return video_files[0] if video_files else None

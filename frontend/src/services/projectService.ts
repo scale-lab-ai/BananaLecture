@@ -62,6 +62,15 @@ export const downloadPpt = async (projectId: string): Promise<Blob> => {
   return response.data;
 };
 
+// 导出并下载视频
+export const downloadVideo = async (projectId: string): Promise<Blob> => {
+  const response = await api.get(`/projects/${projectId}/download-video`, {
+    responseType: 'blob',
+    timeout: 600000 // 10分钟超时，视频导出可能需要较长时间
+  });
+  return response.data;
+};
+
 // 获取指定页面的图片
 export const getImage = async (projectId: string, pageNumber: number): Promise<GetImageResponse> => {
   const response = await api.get(`/images/${projectId}/${pageNumber}`, {
