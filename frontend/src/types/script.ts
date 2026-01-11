@@ -17,7 +17,7 @@ export interface Script {
 }
 
 // 枚举类型定义
-export type DialogueRole = "旁白" | "大雄" | "哆啦A梦" | "道具" | "其他男声" | "其他女声" | "其他";
+export type DialogueRole = string;
 export type EmotionType = "auto" | "happy" | "sad" | "angry" | "fearful" | "disgusted" | "surprised" | "neutral" | "fluent";
 export type SpeechSpeed = "慢" | "正常" | "快";
 

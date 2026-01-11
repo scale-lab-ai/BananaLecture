@@ -5,8 +5,10 @@ import { useProjectStore } from '../../stores';
 import { useTaskStore } from '../../stores/taskStore';
 import { generateScript, addDialogue, updateDialogue, deleteDialogue, moveDialogue } from '../../services/scriptService';
 import { generatePageAudio, getPageAudio, generateDialogueAudio, getDialogueAudio } from '../../services/audioService';
+import { getRoleList } from '../../services/configService';
 import type { DialogueItem, DialogueRole, EmotionType, SpeechSpeed } from '../../types/script';
 import type { AudioPlayerState } from '../../types/audio';
+import type { RoleItem } from '../../types/config';
 import DialogueEditor from './DialogueEditor';
 import '../../styles/PageView.css';
 
@@ -59,6 +61,9 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
   const [pageAudioTaskId, setPageAudioTaskId] = useState<string | null>(null);
   const [pageAudioProgress, setPageAudioProgress] = useState(0);
   
+  // 脚本生成状态
+  const [scriptGenerating, setScriptGenerating] = useState(false);
+  
   // 对话音频播放状态映射
   const [dialogueAudioStates, setDialogueAudioStates] = useState<Record<string, AudioPlayerState>>({});
   
@@ -72,6 +77,10 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
   // 添加对话表单状态
   const [addDialogueModalVisible, setAddDialogueModalVisible] = useState(false);
   const [addDialogueForm] = Form.useForm();
+  
+  // 角色列表状态
+  const [roleList, setRoleList] = useState<RoleItem[]>([]);
+  const [roleListLoading, setRoleListLoading] = useState(false);
   
   // 音频元素引用
   const pageAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -217,8 +226,27 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
     restoreTaskMonitoring();
   }, []); // 只在组件挂载时执行一次
   
+  // 获取角色列表
+  useEffect(() => {
+    const fetchRoleList = async () => {
+      setRoleListLoading(true);
+      try {
+        const response = await getRoleList();
+        setRoleList(response.roles);
+      } catch (error) {
+        console.error('获取角色列表失败:', error);
+        message.error('获取角色列表失败');
+      } finally {
+        setRoleListLoading(false);
+      }
+    };
+    
+    fetchRoleList();
+  }, []); // 只在组件挂载时执行一次
+  
   // 生成页面脚本
   const handleGenerateScript = async () => {
+    setScriptGenerating(true);
     try {
       await generateScript({ project_id: projectId, page_number: pageNumber });
       message.success('脚本生成已开始');
@@ -231,6 +259,8 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
     } catch (error) {
       console.error('生成脚本失败:', error);
       message.error('生成脚本失败');
+    } finally {
+      setScriptGenerating(false);
     }
   };
   
@@ -610,6 +640,8 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
                   type="primary"
                   icon={<EditOutlined />}
                   onClick={handleGenerateScript}
+                  loading={scriptGenerating}
+                  disabled={scriptGenerating}
                   style={{ borderRadius: '20px', padding: '6px 16px', background: '#1890ff', border: 'none' }}
                 >
                   生成口播稿
@@ -618,6 +650,7 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
                   icon={<SoundOutlined />}
                   onClick={handleGeneratePageAudio}
                   loading={!!pageAudioTaskId}
+                  disabled={scriptGenerating}
                   style={{ borderRadius: '20px', padding: '6px 16px' }}
                 >
                   生成音频
@@ -625,6 +658,7 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
                 <Button
                   icon={<PlayCircleOutlined />}
                   onClick={handlePlayPageAudio}
+                  disabled={scriptGenerating}
                   style={{ borderRadius: '20px', padding: '6px 16px' }}
                 >
                   {audioPlayerState.isPlaying ? '暂停音频' : '播放音频'}
@@ -632,6 +666,7 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
                 <Button
                   icon={<ReloadOutlined />}
                   onClick={handleRefreshPageAudio}
+                  disabled={scriptGenerating}
                   style={{ borderRadius: '20px', padding: '6px 16px' }}
                 >
                   刷新音频
@@ -756,6 +791,7 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
         {editingDialogue && (
           <DialogueEditor
             dialogue={editingDialogue}
+            roleList={roleList}
             onSave={handleUpdateDialogue}
             onCancel={() => {
               setEditDialogueModalVisible(false);
@@ -781,16 +817,14 @@ const PageView = forwardRef<PageViewRef, PageViewProps>(({ projectId, pageNumber
             name="role"
             label="角色"
             rules={[{ required: true, message: '请选择角色' }]}
-            initialValue="旁白"
+            initialValue={roleList.length > 0 ? roleList[0].name : undefined}
           >
-            <Select>
-              <Select.Option value="旁白">旁白</Select.Option>
-              <Select.Option value="大雄">大雄</Select.Option>
-              <Select.Option value="哆啦A梦">哆啦A梦</Select.Option>
-              <Select.Option value="道具">道具</Select.Option>
-              <Select.Option value="其他男声">其他男声</Select.Option>
-              <Select.Option value="其他女声">其他女声</Select.Option>
-              <Select.Option value="其他">其他</Select.Option>
+            <Select loading={roleListLoading}>
+              {roleList.map(role => (
+                <Select.Option key={role.name} value={role.name}>
+                  {role.name}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
           

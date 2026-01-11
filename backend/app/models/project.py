@@ -66,6 +66,7 @@ class PDFConvertResponse(BaseModel):
     """PDF转换响应"""
     message: str
     images: List[Image]
+    task_id: Optional[str] = Field(None, description="任务ID，用于进度跟踪")
 
 
 class ScriptResponse(BaseModel):

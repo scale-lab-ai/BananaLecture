@@ -1,18 +1,16 @@
-import os
 import json
 from pathlib import Path
 from typing import List, Optional
-from datetime import datetime
 import logging
 
 from app.models import Project, Image
 from app.utils.file_utils import (
     generate_unique_id, 
-    create_project_directory, 
     delete_directory,
     save_upload_file,
     safe_filename
 )
+from app.core.path_manager import PathManager
 
 logger = logging.getLogger(__name__)
 
@@ -20,28 +18,17 @@ logger = logging.getLogger(__name__)
 class ProjectService:
     """项目服务类"""
     
-    def __init__(self, storage_dir: Optional[str] = None):
-        """初始化项目服务
+    def __init__(self, path_manager: Optional[PathManager] = None):
+        """Initialize project service
         
         Args:
-            storage_dir: 存储目录，默认为当前工作目录下的storage/projects
+            path_manager: Path manager instance, if None uses global instance
         """
-        if storage_dir is None:
-            # 默认存储目录为项目根目录下的storage/projects
-            self.storage_dir = Path.cwd() / "storage" / "projects"
-        else:
-            self.storage_dir = Path(storage_dir)
-        
-        # 确保存储目录存在
-        self.storage_dir.mkdir(parents=True, exist_ok=True)
-        
-        # 项目数据存储路径
-        self.data_dir = self.storage_dir / "data"
-        self.data_dir.mkdir(exist_ok=True)
+        self.path_manager = path_manager or PathManager()
     
     def _get_project_file_path(self, project_id: str) -> Path:
-        """获取项目数据文件路径"""
-        return self.data_dir / f"{project_id}.json"
+        """Get project data file path"""
+        return self.path_manager.get_project_data_file(project_id)
     
     def _save_project_data(self, project: Project) -> bool:
         """保存项目数据到文件"""
@@ -74,31 +61,31 @@ class ProjectService:
             return None
     
     def create_project(self, name: str) -> Project:
-        """创建新项目
+        """Create new project
         
         Args:
-            name: 项目名称
+            name: Project name
             
         Returns:
-            创建的项目对象
+            Created project object
         """
-        # 生成唯一ID
+        # Generate unique ID
         project_id = generate_unique_id()
         
-        # 创建项目目录结构
-        directories = create_project_directory(project_id, self.storage_dir)
+        # Create project directory structure
+        self.path_manager.ensure_project_structure(project_id)
         
-        # 创建项目对象
+        # Create project object
         project = Project(
             id=project_id,
             name=name
         )
         
-        # 保存项目数据
+        # Save project data
         if not self._save_project_data(project):
-            raise Exception("保存项目数据失败")
+            raise Exception("Failed to save project data")
         
-        logger.info(f"创建项目成功: {project_id}")
+        logger.info(f"Project created successfully: {project_id}")
         return project
     
     def get_project(self, project_id: str) -> Optional[Project]:
@@ -113,114 +100,115 @@ class ProjectService:
         return self._load_project_data(project_id)
     
     def get_all_projects(self) -> List[Project]:
-        """获取所有项目列表
+        """Get all projects list
         
         Returns:
-            项目列表
+            List of projects
         """
         projects = []
         
-        # 遍历数据目录中的所有项目文件
-        for project_file in self.data_dir.glob("*.json"):
+        # Iterate through all project files in data directory
+        data_dir = self.path_manager.get_project_data_dir()
+        for project_file in data_dir.glob("*.json"):
             project_id = project_file.stem
             project = self._load_project_data(project_id)
             if project:
                 projects.append(project)
         
-        # 按创建时间倒序排序
+        # Sort by creation time in descending order
         projects.sort(key=lambda p: p.created_at, reverse=True)
         return projects
     
     def update_project(self, project_id: str, name: str) -> Optional[Project]:
-        """更新项目名称
+        """Update project name
         
         Args:
-            project_id: 项目ID
-            name: 新的项目名称
+            project_id: Project ID
+            name: New project name
             
         Returns:
-            更新后的项目对象，如果不存在则返回None
+            Updated project object, returns None if doesn't exist
         """
         project = self._load_project_data(project_id)
         if not project:
             return None
         
-        # 更新项目名称和时间戳
+        # Update project name and timestamp
         project.name = name
         project.update_timestamp()
         
-        # 保存更新后的数据
+        # Save updated data
         if not self._save_project_data(project):
-            raise Exception("保存项目数据失败")
+            raise Exception("Failed to save project data")
         
-        logger.info(f"更新项目成功: {project_id}")
+        logger.info(f"Project updated successfully: {project_id}")
         return project
     
     def delete_project(self, project_id: str) -> bool:
-        """删除项目
+        """Delete project
         
         Args:
-            project_id: 项目ID
+            project_id: Project ID
             
         Returns:
-            是否删除成功
+            Whether deletion was successful
         """
-        # 检查项目是否存在
+        # Check if project exists
         project = self._load_project_data(project_id)
         if not project:
             return False
         
         try:
-            # 删除项目目录
-            project_dir = self.storage_dir / project_id
+            # Delete project directory
+            project_dir = self.path_manager.get_project_dir(project_id)
             delete_directory(project_dir)
             
-            # 删除项目数据文件
+            # Delete project data file
             project_file = self._get_project_file_path(project_id)
             if project_file.exists():
                 project_file.unlink()
             
-            logger.info(f"删除项目成功: {project_id}")
+            logger.info(f"Project deleted successfully: {project_id}")
             return True
         except Exception as e:
-            logger.error(f"删除项目失败: {str(e)}")
+            logger.error(f"Failed to delete project: {str(e)}")
             return False
     
     def upload_pdf(self, project_id: str, pdf_file) -> str:
-        """上传PDF文件
+        """Upload PDF file
         
         Args:
-            project_id: 项目ID
-            pdf_file: PDF文件对象
+            project_id: Project ID
+            pdf_file: PDF file object
             
         Returns:
-            PDF文件路径
+            PDF file path
         """
-        # 检查项目是否存在
+        # Check if project exists
         project = self._load_project_data(project_id)
         if not project:
-            raise Exception("项目不存在")
+            raise Exception("Project doesn't exist")
         
         try:
-            # 生成安全的文件名
+            # Generate safe filename
             safe_name = safe_filename(pdf_file.filename)
             pdf_filename = f"{safe_name}"
-            pdf_path = self.storage_dir / project_id / pdf_filename
+            pdf_path = self.path_manager.get_project_dir(project_id) / pdf_filename
             
-            # 保存文件
+            # Save file
             if not save_upload_file(pdf_file, pdf_path):
-                raise Exception("保存PDF文件失败")
+                raise Exception("Failed to save PDF file")
             
-            # 更新项目数据
+            # Update project data
             project.pdf_path = str(pdf_path)
             project.update_timestamp()
             
-            # 保存更新后的数据
+            # Save updated data
             if not self._save_project_data(project):
-                raise Exception("保存项目数据失败")
+                raise Exception("Failed to save project data")
             
-            logger.info(f"上传PDF文件成功: {project_id} - {pdf_path}")
+            logger.info(f"PDF file uploaded successfully: {project_id} - {pdf_path}")
             return str(pdf_path)
         except Exception as e:
-            logger.error(f"上传PDF文件失败: {str(e)}")
+            logger.error(f"Failed to upload PDF file: {str(e)}")
             raise

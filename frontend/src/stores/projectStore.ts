@@ -12,6 +12,7 @@ import {
   getImage
 } from '../services/projectService';
 import { getScript } from '../services/scriptService';
+import { useTaskStore } from './taskStore';
 
 interface ProjectState {
   projects: Project[];
@@ -37,6 +38,11 @@ interface ProjectState {
   isCreatingProject: boolean;
   isUpdatingProject: boolean;
   isDeletingProject: boolean;
+
+  // PDF conversion progress
+  pdfConversionTaskId: string | null;
+  pdfConversionProgress: number;
+  isPdfConverting: boolean;
   
   // 操作方法
   fetchProjects: () => Promise<void>;
@@ -46,6 +52,7 @@ interface ProjectState {
   deleteProject: (projectId: string) => Promise<void>;
   setCurrentProject: (project: Project | null) => void;
   uploadPdf: (projectId: string, file: File) => Promise<void>;
+  uploadPdfAndConvert: (projectId: string, file: File) => Promise<void>;
   convertPdf: (projectId: string) => Promise<void>;
   downloadPpt: (projectId: string) => Promise<Blob | null>;// 获取图片
   getImage: (projectId: string, pageNumber: number) => Promise<void>;
@@ -90,6 +97,11 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   isCreatingProject: false,
   isUpdatingProject: false,
   isDeletingProject: false,
+
+  // PDF conversion progress
+  pdfConversionTaskId: null,
+  pdfConversionProgress: 0,
+  isPdfConverting: false,
   
   // 获取项目列表
   fetchProjects: async () => {
@@ -246,19 +258,115 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       });
     }
   },
+
+  // 上传PDF并自动切分
+  uploadPdfAndConvert: async (projectId: string, file: File) => {
+    set({ isCurrentLoading: true, currentError: null, isPdfConverting: true, pdfConversionProgress: 0 });
+    try {
+      // 第一步：上传PDF
+      await uploadPdf(projectId, file);
+
+      // 第二步：切分PDF为图片
+      const response = await convertPdf(projectId);
+
+      // If task_id is returned, monitor progress
+      if (response.task_id) {
+        set({ pdfConversionTaskId: response.task_id });
+
+        // Start monitoring task progress
+        const taskStore = useTaskStore.getState();
+        taskStore.startMonitoring(response.task_id);
+
+        // Add listener to update progress
+        const progressListener = (progress: any) => {
+          if (progress.taskId === response.task_id) {
+            set({ pdfConversionProgress: progress.progress * 100 });
+
+            // If task is completed or failed, refresh project data
+            if (progress.status === 'completed' || progress.status === 'failed') {
+              set({ isPdfConverting: false });
+              get().fetchProject(projectId).catch(error => {
+                console.error('Failed to refresh project after PDF conversion:', error);
+              });
+            }
+          }
+        };
+
+        taskStore.addTaskListener(progressListener);
+
+        // Clean up listener when task is done
+        const checkTaskStatus = setInterval(() => {
+          const task = taskStore.tasks?.find(t => t.id === response.task_id);
+          if (task && (task.status === 'completed' || task.status === 'failed')) {
+            clearInterval(checkTaskStatus);
+            taskStore.removeTaskListener(progressListener);
+          }
+        }, 1000);
+      } else {
+        // Fallback to old behavior if no task_id
+        await get().fetchProject(projectId);
+        set({ isPdfConverting: false });
+      }
+    } catch (error) {
+      set({
+        currentError: error instanceof Error ? error.message : '上传PDF或切分失败',
+        isCurrentLoading: false,
+        isPdfConverting: false
+      });
+      throw error;
+    }
+  },
   
   // PDF转图片
   convertPdf: async (projectId: string) => {
-    set({ isCurrentLoading: true, currentError: null });
+    set({ isCurrentLoading: true, currentError: null, isPdfConverting: true, pdfConversionProgress: 0 });
     try {
-      await convertPdf(projectId);
-      
-      // 重新获取项目详情以更新图片列表
-      await get().fetchProject(projectId);
+      // Call API to start conversion
+      const response = await convertPdf(projectId);
+
+      // If task_id is returned, monitor progress
+      if (response.task_id) {
+        set({ pdfConversionTaskId: response.task_id });
+
+        // Start monitoring task progress
+        const taskStore = useTaskStore.getState();
+        taskStore.startMonitoring(response.task_id);
+
+        // Add listener to update progress
+        const progressListener = (progress: any) => {
+          if (progress.taskId === response.task_id) {
+            set({ pdfConversionProgress: progress.progress * 100 });
+
+            // If task is completed or failed, refresh project data
+            if (progress.status === 'completed' || progress.status === 'failed') {
+              set({ isPdfConverting: false });
+              get().fetchProject(projectId).catch(error => {
+                console.error('Failed to refresh project after PDF conversion:', error);
+              });
+            }
+          }
+        };
+
+        taskStore.addTaskListener(progressListener);
+
+        // Clean up listener when task is done
+        const checkTaskStatus = setInterval(() => {
+          const task = taskStore.tasks?.find(t => t.id === response.task_id);
+          if (task && (task.status === 'completed' || task.status === 'failed')) {
+            clearInterval(checkTaskStatus);
+            taskStore.removeTaskListener(progressListener);
+          }
+        }, 1000);
+      } else {
+        // Fallback to old behavior if no task_id
+        await get().fetchProject(projectId);
+        set({ isPdfConverting: false });
+      }
     } catch (error) {
-      set({ 
-        currentError: error instanceof Error ? error.message : 'PDF转图片失败', 
-        isCurrentLoading: false 
+      set({
+        currentError: error instanceof Error ? error.message : 'PDF转图片失败',
+        isCurrentLoading: false,
+        isPdfConverting: false
       });
     }
   },

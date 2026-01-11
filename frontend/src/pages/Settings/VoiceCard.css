@@ -1,0 +1,53 @@
+.voice-card {
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.voice-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.voice-card-selected {
+  border-color: #1890ff !important;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+}
+
+.voice-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.voice-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.voice-card-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.voice-card-description {
+  flex: 1;
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #595959;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.voice-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}

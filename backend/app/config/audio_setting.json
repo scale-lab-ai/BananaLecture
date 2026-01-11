@@ -1,0 +1,443 @@
+[
+    {
+    "voice_id": "bananalecture_doraemon",
+    "name": "哆啦A梦",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "哆啦A梦的声音",
+    "example_url": ""
+  },
+  {
+    "voice_id": "bananalecture_nobita",
+    "name": "大雄",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "大雄的声音",
+    "example_url": ""
+  },
+  {
+    "voice_id": "Boyan_new_platform",
+    "name": "绅士青年",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "声音温文尔雅，充满风度与教养，适合成熟稳重的青年角色。",
+    "example_url": "https://filecdn.minimax.chat/public/f8e6927f-e9ba-4aa5-b030-94fed66ef32b.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_BashfulGirl",
+    "name": "害羞少女",
+    "gender": "女",
+    "age_group": "少年",
+    "language": "中文",
+    "description": "语调轻柔带点怯生生的感觉，展现少女的青涩与害羞",
+    "example_url": "https://filecdn.minimax.chat/public/19930b16-4601-4a54-9e94-9073a7ff34b3.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Crisp_Girl",
+    "name": "清冷少女",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "声线冷静淡然，带着一丝疏离感，适合高冷或神秘的少女角色",
+    "example_url": "https://filecdn.minimax.chat/public/0f36da25-7478-4400-b0d0-45aee4fd162e.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Cute_Spirit",
+    "name": "灵动精灵",
+    "gender": "女",
+    "age_group": "少年",
+    "language": "中文",
+    "description": "语气活泼轻快，声音中透着俏皮与灵气，充满童话感",
+    "example_url": "https://filecdn.minimax.chat/public/3b43320c-929d-43e2-9bb7-e39cac0b4493.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_ExplorativeGirl",
+    "name": "探索少女",
+    "gender": "女",
+    "age_group": "少年",
+    "language": "中文",
+    "description": "充满好奇与冒险精神，声音灵动且富有朝气。",
+    "example_url": "https://filecdn.minimax.chat/public/681d9540-ba76-440c-aed7-b4c6d1c48573.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Gentle_Senior",
+    "name": "和蔼长者",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "温和慈祥的嗓音，充满智慧和包容感，适合年长角色。",
+    "example_url": "https://filecdn.minimax.chat/public/e42ab9ef-576a-456c-8510-632bb9804520.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Gentle_Youth",
+    "name": "温柔少年",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "语气温暖亲切，带有少年特有的柔和感。",
+    "example_url": "https://filecdn.minimax.chat/public/e5f23e9d-1509-4f87-be8f-77f5c9770695.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_IntellectualGirl",
+    "name": "睿智少女",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "理性且富有思辨性，适合聪慧、独立的少女角色。",
+    "example_url": "https://filecdn.minimax.chat/public/2fd1c36d-b638-49f1-afb4-0ad00d9b0b53.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Kind-hearted_Elder",
+    "name": "仁爱长者",
+    "gender": "女",
+    "age_group": "老年",
+    "language": "中文",
+    "description": "声音慈爱宽厚，充满温情，像邻家的长辈一般亲切。",
+    "example_url": "https://filecdn.minimax.chat/public/9cebf5e3-a4a2-45a5-beee-cad2033e6315.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Laid_BackGirl",
+    "name": "慵懒少女",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "语调松弛带点慵懒感，适合随性、自由的少女角色。",
+    "example_url": "https://filecdn.minimax.chat/public/75282626-7526-44fa-a108-0a73ac14f660.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Lyrical_Voice",
+    "name": "抒情嗓音",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "声线柔和，富有情感感染力，适合朗读或歌唱。",
+    "example_url": "https://filecdn.minimax.chat/public/093ea0e6-7c6a-4e50-8e4b-11ae43a8d0e1.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Male_Announcer",
+    "name": "雄浑播音",
+    "gender": "男",
+    "age_group": "中年",
+    "language": "中文",
+    "description": "低沉浑厚，富有权威感，适合正式广播或新闻播报。",
+    "example_url": "https://filecdn.minimax.chat/public/9d22ebb9-0a4f-4c19-b2b9-f5917a6044cd.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Pure-hearted_Boy",
+    "name": "纯真少年",
+    "gender": "男",
+    "age_group": "少年",
+    "language": "中文",
+    "description": "充满朝气和纯真的少年嗓音，语调清亮自然.",
+    "example_url": "https://filecdn.minimax.chat/public/f8ba565f-1fad-41da-b79a-9992278a668e.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Radio_Host",
+    "name": "电台主持",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "声音专业稳健，富有亲和力，适合广播节目主持风格。",
+    "example_url": "https://filecdn.minimax.chat/public/63c81fc5-5377-4cd2-bd29-30b4ad8bf381.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Sincere_Adult",
+    "name": "诚恳大人",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "语气真诚，富有责任感，适合成熟稳重的角色。",
+    "example_url": "https://filecdn.minimax.chat/public/f66e0453-12d6-41a3-bab1-c5ae52638fb0.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Soft_Girl",
+    "name": "柔和少女",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "轻柔甜美的少女嗓音，温暖又治愈。",
+    "example_url": "https://filecdn.minimax.chat/public/f7d73794-78cd-4edd-859b-50f8e9130983.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Straightforward_Boy",
+    "name": "直率少年",
+    "gender": "男",
+    "age_group": "少年",
+    "language": "中文",
+    "description": "语调干脆直接，不拐弯抹角，充满少年气。",
+    "example_url": "https://filecdn.minimax.chat/public/8dfbc851-891b-4215-a25f-840d653cb8ec.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Stubborn_Friend",
+    "name": "倔强挚友",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "语气坚定而不服输，适合忠诚又有个性的朋友形象。",
+    "example_url": "https://filecdn.minimax.chat/public/b5f22916-59c4-4687-ae74-47b65d6bbbd9.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Warm_Bestie",
+    "name": "暖心闺蜜",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "甜美温暖，充满关怀感，像最贴心的朋友。",
+    "example_url": "https://filecdn.minimax.chat/public/24fe12bc-20ab-4608-9708-56c9d655bbbf.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Warm_Girl",
+    "name": "温暖少女",
+    "gender": "女",
+    "age_group": "少年",
+    "language": "中文",
+    "description": "声音轻柔甜美，让人感受到温暖的陪伴。",
+    "example_url": "https://filecdn.minimax.chat/public/8b8d7a74-1533-40fe-96cc-8019b556a901.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Warm_HeartedGirl",
+    "name": "善良少女",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "语调温和，带有纯真善良的氛围。",
+    "example_url": "https://filecdn.minimax.chat/public/20027ca8-9e36-44c1-86ce-dd00dd8ecabc.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Warm-HeartedAunt",
+    "name": "慈爱阿姨",
+    "gender": "女",
+    "age_group": "中年",
+    "language": "中文",
+    "description": "充满母性光辉，温柔而有耐心。",
+    "example_url": "https://filecdn.minimax.chat/public/9866a347-79ec-4035-9650-16f7c8ccca9c.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Wise_Women",
+    "name": "睿智女性",
+    "gender": "女",
+    "age_group": "中年",
+    "language": "中文",
+    "description": "语调稳重，带有知识与阅历的沉淀感。",
+    "example_url": "https://filecdn.minimax.chat/public/003c38e9-7b26-4a01-906e-1d178ca9cb90.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Sweet_Lady",
+    "name": "甜美女士",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "甜美柔和的女性嗓音，充满亲和力。",
+    "example_url": "https://filecdn.minimax.chat/public/803ad050-bcb9-4dca-9fd2-674ae9119092.mp3"
+  },
+  {
+    "voice_id": "English_Aussie_Bloke",
+    "name": "Aussie Bloke",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "英文",
+    "description": "典型的澳大利亚男人嗓音，随性而富有亲和力.",
+    "example_url": "https://filecdn.minimax.chat/public/481439fa-666e-458b-ad62-6966d2df9c88.mp3"
+  },
+  {
+    "voice_id": "English_BossyLeader",
+    "name": "Bossy Leader",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "英文",
+    "description": "语气坚定有力，带有领导者的威严和权威感。",
+    "example_url": "https://filecdn.minimax.chat/public/7f47861e-bcef-4df3-bba5-70e432b16cfe.mp3"
+  },
+  {
+    "voice_id": "English_Deep-VoicedGentleman",
+    "name": "Deep-voiced Gentleman",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "英文",
+    "description": "声音低沉醇厚，富有磁性和魅力。",
+    "example_url": "https://filecdn.minimax.chat/public/d15a8fba-f54e-4edb-8a89-c1e649bb9a69.mp3"
+  },
+  {
+    "voice_id": "English_Diligent_Man",
+    "name": "Diligent Man",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "英文",
+    "description": "语调稳健，带着努力奋斗的坚定感。",
+    "example_url": "https://filecdn.minimax.chat/public/1ce306d6-4d81-4050-8dae-136ce1ab836d.mp3"
+  },
+  {
+    "voice_id": "English_Jovialman",
+    "name": "Jovial Man",
+    "gender": "男",
+    "age_group": "中年",
+    "language": "英文",
+    "description": "充满活力与幽默感，声音富有感染力。",
+    "example_url": "https://filecdn.minimax.chat/public/5fc5e067-f891-4bdb-b56e-4bb3004745c8.mp3"
+  },
+  {
+    "voice_id": "English_Comedian",
+    "name": "Comedian",
+    "gender": "男",
+    "age_group": "少年",
+    "language": "英文",
+    "description": "语调风趣幽默，节奏灵活多变。",
+    "example_url": "https://filecdn.minimax.chat/public/c169c67f-9ac0-4209-9789-2f2fec530635.mp3"
+  },
+  {
+    "voice_id": "English_LovelyGirl",
+    "name": "Lovely Girl",
+    "gender": "女",
+    "age_group": "少年",
+    "language": "英文",
+    "description": "甜美可爱，活泼中带着一点俏皮。",
+    "example_url": "https://filecdn.minimax.chat/public/0c0ae724-fc25-4808-8885-3feaaaa94c2b.mp3"
+  },
+  {
+    "voice_id": "English_PassionateWarrior",
+    "name": "Passionate Warrior",
+    "gender": "男",
+    "age_group": "少年",
+    "language": "英文",
+    "description": "语调激昂有力，充满战斗精神和激情。",
+    "example_url": "https://filecdn.minimax.chat/public/5464644e-11eb-4fb2-83b4-627beb61bfc9.mp3"
+  },
+  {
+    "voice_id": "English_SadTeen",
+    "name": "Teen Boy",
+    "gender": "男",
+    "age_group": "少年",
+    "language": "英文",
+    "description": "充满青春气息，带着少年的活力与冲劲。",
+    "example_url": "https://filecdn.minimax.chat/public/9f3660c2-2db4-4858-9cbf-a422060f1316.mp3"
+  },
+  {
+    "voice_id": "English_SentimentalLady",
+    "name": "Sentimental Lady",
+    "gender": "女",
+    "age_group": "中年",
+    "language": "英文",
+    "description": "语气温柔，带有感性与情绪化的细腻表达。",
+    "example_url": "https://filecdn.minimax.chat/public/23a23cfc-8032-43b7-baec-b21bc61dd052.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Mature_Woman",
+    "name": "成熟女士",
+    "gender": "女",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "端庄知性，带有优雅成熟的女性魅力。",
+    "example_url": "https://filecdn.minimax.chat/public/5a722eb5-8ede-4d6f-8cb0-c0f33846a33b.mp3"
+  },
+  {
+    "voice_id": "English_Graceful_Lady",
+    "name": "Graceful Lady",
+    "gender": "女",
+    "age_group": "中年",
+    "language": "英文",
+    "description": "声线柔和且充满高贵气质，展现优雅女性风范。",
+    "example_url": "https://filecdn.minimax.chat/public/ba0b454d-c015-40b5-a956-e3d802bb401d.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_HK_Flight_Attendant",
+    "name": "港式空姐",
+    "gender": "女",
+    "age_group": "中年",
+    "language": "中文",
+    "description": "语调柔和，带着独特的港式英语腔调和礼貌感。",
+    "example_url": "https://filecdn.minimax.chat/public/666bc177-a6b0-4ec7-9a47-e10601aa2446.mp3"
+  },
+  {
+    "voice_id": "English_Debator",
+    "name": "Male Debater",
+    "gender": "男",
+    "age_group": "中年",
+    "language": "英文",
+    "description": "语气清晰有力，逻辑严谨，适合辩论风格的表达。",
+    "example_url": "https://filecdn.minimax.chat/public/27310706-3f34-492f-9781-e3f36b3c248e.mp3"
+  },
+  {
+    "voice_id": "English_MaturePartner",
+    "name": "Mature Partner",
+    "gender": "男",
+    "age_group": "中年",
+    "language": "英文",
+    "description": "稳重可靠，充满信任感，适合作为人生伴侣般的声音。",
+    "example_url": "https://filecdn.minimax.chat/public/7087fe3c-b886-4737-b9b8-27afcefdd11f.mp3"
+  },
+  {
+    "voice_id": "English_PlayfulGirl",
+    "name": "Playful Girl",
+    "gender": "女",
+    "age_group": "少年",
+    "language": "英文",
+    "description": "轻快活泼，带有顽皮俏皮的语调。",
+    "example_url": "https://filecdn.minimax.chat/public/af5d1cca-374b-4a49-851e-030fc3dc374b.mp3"
+  },
+  {
+    "voice_id": "English_ReservedYoungMan",
+    "name": "Reserved Young Man",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "英文",
+    "description": "语气内敛沉稳，不轻易流露情绪。",
+    "example_url": "https://filecdn.minimax.chat/public/17a4f7fd-a0e4-40c5-ba03-801df498f05f.mp3"
+  },
+  {
+    "voice_id": "English_Trustworth_Man",
+    "name": "Trustworthy Man",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "英文",
+    "description": "声音沉稳可靠，充满安全感。",
+    "example_url": "https://filecdn.minimax.chat/public/5fadf12a-1d40-4f85-9e27-fe9a6ce09c4b.mp3"
+  },
+  {
+    "voice_id": "English_UpsetGirl",
+    "name": "Upset Girl",
+    "gender": "女",
+    "age_group": "少年",
+    "language": "英文",
+    "description": "语调微带忧郁和不安，情绪化明显。",
+    "example_url": "https://filecdn.minimax.chat/public/c0ccaab5-e0f6-449b-8f9e-e51e08e90a97.mp3"
+  },
+  {
+    "voice_id": "English_Whispering_girl_v3",
+    "name": "Whispering girl",
+    "gender": "女",
+    "age_group": "少年",
+    "language": "英文",
+    "description": "轻声细语，温柔如耳边私语。",
+    "example_url": "https://filecdn.minimax.chat/public/b7e39ab7-9a59-4cef-8c32-b342f8b6fd55.mp3"
+  },
+  {
+    "voice_id": "English_Wiselady",
+    "name": "Wise Lady",
+    "gender": "女",
+    "age_group": "中年",
+    "language": "英文",
+    "description": "语调从容睿智，带有深思熟虑的沉稳感。",
+    "example_url": "https://filecdn.minimax.chat/public/651cdf98-1747-4932-9ea5-34aad03a6bb5.mp3"
+  },
+  {
+    "voice_id": "Chinese (Mandarin)_Unrestrained_Young_Man",
+    "name": "洒脱青年",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "声音随性自然，带点不拘一格的潇洒感。",
+    "example_url": "https://filecdn.minimax.chat/public/04b3ca4e-dafc-4496-b330-f57c88333d9b.mp3"
+  },
+  {
+    "voice_id": "Robot_Armor",
+    "name": "机甲音",
+    "gender": "男",
+    "age_group": "青年",
+    "language": "中文",
+    "description": "机械感十足，带有合成音效，适合 AI 或机器人角色。",
+    "example_url": "https://filecdn.minimax.chat/public/b02a6b0a-fb19-4055-95b8-95a5275edb46.mp3"
+  }
+]

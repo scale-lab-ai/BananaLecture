@@ -2,17 +2,23 @@ from functools import lru_cache
 from typing import Generator, AsyncGenerator
 from fastapi import Depends
 from app.config import config_manager, AppConfig
+from app.core.path_manager import PathManager, path_manager
 
 
 @lru_cache()
 def get_config() -> AppConfig:
-    """获取应用配置的依赖注入函数"""
+    """Get application configuration dependency injection function"""
     return config_manager.get_config()
 
 
 def get_config_manager():
-    """获取配置管理器的依赖注入函数"""
+    """Get configuration manager dependency injection function"""
     return config_manager
+
+
+def get_path_manager() -> PathManager:
+    """Get path manager dependency injection function"""
+    return path_manager
 
 
 # 示例：数据库连接依赖（如果将来需要）

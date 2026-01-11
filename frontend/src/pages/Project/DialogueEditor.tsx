@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Select, Input, Button, Space, message } from 'antd';
 import type { DialogueItem } from '../../types/script';
+import type { RoleItem } from '../../types/config';
 
 const { TextArea } = Input;
 
 interface DialogueEditorProps {
   dialogue: DialogueItem;
+  roleList: RoleItem[];
   onSave: (values: Partial<DialogueItem>) => void;
   onCancel: () => void;
 }
 
-const DialogueEditor: React.FC<DialogueEditorProps> = ({ dialogue, onSave, onCancel }) => {
+const DialogueEditor: React.FC<DialogueEditorProps> = ({ dialogue, roleList, onSave, onCancel }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      role: dialogue.role,
+      content: dialogue.content,
+      emotion: dialogue.emotion,
+      speed: dialogue.speed
+    });
+  }, [dialogue, form]);
 
   const handleSubmit = async (values: any) => {
     setLoading(true);
@@ -30,12 +41,6 @@ const DialogueEditor: React.FC<DialogueEditorProps> = ({ dialogue, onSave, onCan
     <Form
       form={form}
       layout="vertical"
-      initialValues={{
-        role: dialogue.role,
-        content: dialogue.content,
-        emotion: dialogue.emotion,
-        speed: dialogue.speed
-      }}
       onFinish={handleSubmit}
     >
       <Form.Item
@@ -44,13 +49,11 @@ const DialogueEditor: React.FC<DialogueEditorProps> = ({ dialogue, onSave, onCan
         rules={[{ required: true, message: '请选择角色' }]}
       >
         <Select>
-          <Select.Option value="旁白">旁白</Select.Option>
-          <Select.Option value="大雄">大雄</Select.Option>
-          <Select.Option value="哆啦A梦">哆啦A梦</Select.Option>
-          <Select.Option value="道具">道具</Select.Option>
-          <Select.Option value="其他男声">其他男声</Select.Option>
-          <Select.Option value="其他女声">其他女声</Select.Option>
-          <Select.Option value="其他">其他</Select.Option>
+          {roleList.map(role => (
+            <Select.Option key={role.name} value={role.name}>
+              {role.name}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
       

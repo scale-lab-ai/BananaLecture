@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import Optional
 import logging
@@ -7,8 +6,9 @@ from pptx.slide import Slide
 from pptx.util import Inches
 from PIL import Image
 
-from app.utils.file_utils import ensure_directory_exists, get_file_size
+from app.utils.file_utils import ensure_directory_exists
 from app.services.project_service import ProjectService
+from app.core.path_manager import PathManager
 
 from moviepy.editor import ImageClip, AudioFileClip, concatenate_videoclips, CompositeVideoClip
 
@@ -18,18 +18,13 @@ logger = logging.getLogger(__name__)
 class ExportService:
     """PPT导出服务类"""
     
-    def __init__(self, storage_dir: Optional[str] = None):
-        """初始化导出服务
+    def __init__(self, path_manager: Optional[PathManager] = None):
+        """Initialize export service
         
         Args:
-            storage_dir: 存储目录，默认为当前工作目录下的storage/projects
+            path_manager: Path manager instance, if None uses global instance
         """
-        if storage_dir is None:
-            self.storage_dir = Path.cwd() / "storage" / "projects"
-        else:
-            self.storage_dir = Path(storage_dir)
-        
-        ensure_directory_exists(self.storage_dir)
+        self.path_manager = path_manager or PathManager()
     
     def set_16_9_slide_size(self, prs: Presentation):
         """设置PPT为16:9比例（标准宽高：13.333英寸 × 7.5英寸）"""
@@ -89,27 +84,27 @@ class ExportService:
             return None
     
     def get_sorted_image_files(self, project_id: str):
-        """获取项目中按页码排序的图片文件列表"""
-        images_dir = self.storage_dir / project_id / "images"
+        """Get list of image files sorted by page number for the project"""
+        images_dir = self.path_manager.get_project_images_dir(project_id)
         if not images_dir.exists():
             return []
         
-        # 获取所有PNG图片文件，使用3位数字格式
+        # Get all PNG image files, using 3-digit format
         image_files = list(images_dir.glob("page_*.png"))
-        # 按页码排序，提取3位数字格式的页码
+        # Sort by page number, extract 3-digit format page number
         image_files.sort(key=lambda x: int(x.stem.split('_')[1]))
         
         return image_files
     
     def get_sorted_audio_files(self, project_id: str):
-        """获取项目中按页码排序的音频文件列表"""
-        audio_dir = self.storage_dir / project_id / "audio"
+        """Get list of audio files sorted by page number for the project"""
+        audio_dir = self.path_manager.get_project_audio_dir(project_id)
         if not audio_dir.exists():
             return []
         
-        # 获取所有MP3文件（页面合并音频）
+        # Get all MP3 files (page merged audio)
         audio_files = list(audio_dir.glob("page_*.mp3"))
-        # 按页码排序
+        # Sort by page number
         audio_files.sort(key=lambda x: int(x.stem.split('_')[1]))
         
         return audio_files
@@ -194,8 +189,8 @@ class ExportService:
         if not output_filename.endswith('.pptx'):
             output_filename += '.pptx'
         
-        # 确保输出目录存在
-        project_dir = self.storage_dir / project_id
+        # Ensure output directory exists
+        project_dir = self.path_manager.get_project_dir(project_id)
         ensure_directory_exists(project_dir)
         
         # 保存PPT
@@ -215,7 +210,7 @@ class ExportService:
         Returns:
             PPT文件路径，如果不存在则返回None
         """
-        project_dir = self.storage_dir / project_id
+        project_dir = self.path_manager.get_project_dir(project_id)
         
         if filename:
             ppt_path = project_dir / filename
@@ -343,7 +338,7 @@ class ExportService:
         if not output_filename.endswith('.mp4'):
             output_filename += '.mp4'
         
-        project_dir = self.storage_dir / project_id
+        project_dir = self.path_manager.get_project_dir(project_id)
         ensure_directory_exists(project_dir)
         
         output_path = project_dir / output_filename
@@ -379,7 +374,7 @@ class ExportService:
         Returns:
             视频文件路径，如果不存在则返回None
         """
-        project_dir = self.storage_dir / project_id
+        project_dir = self.path_manager.get_project_dir(project_id)
         
         if filename:
             video_path = project_dir / filename

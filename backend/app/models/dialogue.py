@@ -2,13 +2,13 @@ from typing import Optional
 from pydantic import Field, ConfigDict
 
 from .base import BaseIdentifiedModel
-from .enums import DialogueRole, EmotionType, SpeechSpeed
+from .enums import EmotionType, SpeechSpeed
 
 
 class DialogueItem(BaseIdentifiedModel):
     model_config = ConfigDict(use_enum_values=True)
     
-    role: DialogueRole = Field(..., description="角色")
+    role: str = Field(..., description="角色")
     content: str = Field(..., min_length=1, description="对话内容")
     emotion: EmotionType = Field(default=EmotionType.AUTO, description="情感")
     speed: SpeechSpeed = Field(default=SpeechSpeed.NORMAL, description="语速")

@@ -1,14 +1,12 @@
-import os
 import json
-import asyncio
 from pathlib import Path
 from typing import List, Optional, Dict, Any, Callable
-from datetime import datetime
 import logging
 from threading import Lock
 
 from app.models import Task, TaskType, TaskStatus
-from app.utils.file_utils import generate_unique_id, ensure_directory
+from app.utils.file_utils import generate_unique_id
+from app.core.path_manager import PathManager
 
 logger = logging.getLogger(__name__)
 
@@ -16,38 +14,31 @@ logger = logging.getLogger(__name__)
 class TaskService:
     """任务管理服务类"""
     
-    def __init__(self, storage_dir: Optional[str] = None):
-        """初始化任务服务
+    def __init__(self, path_manager: Optional[PathManager] = None):
+        """Initialize task service
         
         Args:
-            storage_dir: 存储目录，默认为当前工作目录下的storage/tasks
+            path_manager: Path manager instance, if None uses global instance
         """
-        if storage_dir is None:
-            # 默认存储目录为项目根目录下的storage/tasks
-            self.storage_dir = Path.cwd() / "storage" / "tasks"
-        else:
-            self.storage_dir = Path(storage_dir)
+        self.path_manager = path_manager or PathManager()
         
-        # 确保存储目录存在
-        self.storage_dir.mkdir(parents=True, exist_ok=True)
-        
-        # 内存中的任务缓存
+        # In-memory task cache
         self._tasks: Dict[str, Task] = {}
         
-        # 任务锁，确保线程安全
+        # Task lock, ensures thread safety
         self._lock = Lock()
         
-        # 加载已有任务
+        # Load existing tasks
         self._load_tasks()
     
     def _get_task_file_path(self, task_id: str) -> Path:
-        """获取任务数据文件路径"""
-        return self.storage_dir / f"{task_id}.json"
+        """Get task data file path"""
+        return self.path_manager.get_task_file(task_id)
     
     def _load_tasks(self) -> None:
         """从文件加载所有任务"""
         try:
-            for task_file in self.storage_dir.glob("*.json"):
+            for task_file in self.path_manager.get_tasks_dir().glob("*.json"):
                 with open(task_file, 'r', encoding='utf-8') as f:
                     task_data = json.load(f)
                 

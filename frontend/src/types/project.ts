@@ -60,6 +60,7 @@ export interface DeleteProjectResponse {
 export interface ConvertPdfResponse {
   message: string;
   images: Image[];
+  task_id?: string;
 }
 
 // 获取图片相关类型

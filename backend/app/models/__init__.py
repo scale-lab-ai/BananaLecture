@@ -3,8 +3,8 @@ from .base import BaseTimestampedModel, BaseIdentifiedModel
 
 # 导入枚举类型
 from .enums import (
-    TaskType, TaskStatus,
-    DialogueRole, EmotionType, SpeechSpeed
+    TaskType, TaskStatus, 
+    EmotionType, SpeechSpeed
 )
 
 # 导入任务模型
@@ -26,7 +26,11 @@ from .project import (
 # 导入配置模型
 from .config import (
     EnvConfigResponse, EnvConfigUpdateRequest,
-    RoleConfigResponse, RoleConfigUpdateRequest
+    VoiceSetting, VoiceSettingResponse, VoiceSettingCreateRequest, VoiceSettingUpdateRequest,
+    RoleItem, RoleListResponse, RoleCreateRequest, RoleRenameRequest,
+    VoiceGroup, VoiceGroupListResponse, VoiceGroupCreateRequest, VoiceGroupUpdateRequest,
+    ConfigJson, CurrentGroupResponse,
+    MessageResponse
 )
 
 # 导出所有模型
@@ -38,7 +42,6 @@ __all__ = [
     # 枚举类型
     "TaskType",
     "TaskStatus",
-    "DialogueRole",
     "EmotionType",
     "SpeechSpeed",
     
@@ -66,6 +69,19 @@ __all__ = [
     # 配置模型
     "EnvConfigResponse",
     "EnvConfigUpdateRequest",
-    "RoleConfigResponse",
-    "RoleConfigUpdateRequest",
+    "VoiceSetting",
+    "VoiceSettingResponse",
+    "VoiceSettingCreateRequest",
+    "VoiceSettingUpdateRequest",
+    "RoleItem",
+    "RoleListResponse",
+    "RoleCreateRequest",
+    "RoleRenameRequest",
+    "VoiceGroup",
+    "VoiceGroupListResponse",
+    "VoiceGroupCreateRequest",
+    "VoiceGroupUpdateRequest",
+    "ConfigJson",
+    "CurrentGroupResponse",
+    "MessageResponse",
 ]

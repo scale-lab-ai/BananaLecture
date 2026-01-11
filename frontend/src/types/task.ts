@@ -10,7 +10,7 @@ export interface Task {
   error_message?: string;
 }
 
-export type TaskType = "script_generation" | "audio_generation";
+export type TaskType = "script_generation" | "audio_generation" | "pdf_conversion";
 export type TaskStatus = "pending" | "running" | "completed" | "failed";
 
 // API 请求/响应类型

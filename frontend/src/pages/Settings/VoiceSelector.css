@@ -1,0 +1,35 @@
+.voice-selector-modal .ant-modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.voice-selector {
+  padding: 16px 0;
+}
+
+.voice-selector-filters {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.voice-selector-grid {
+  min-height: 400px;
+}
+
+.voice-card-wrapper {
+  position: relative;
+}
+
+.voice-card-delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.voice-card-wrapper:hover .voice-card-delete-btn {
+  opacity: 1;
+}

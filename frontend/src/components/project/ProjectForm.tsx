@@ -15,7 +15,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ visible, onClose }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const { createProject, uploadPdf, fetchProject } = useProjectStore();
+  const { createProject, uploadPdfAndConvert, fetchProject, isPdfConverting } = useProjectStore();
 
   const handleSubmit = async (values: { name: string }) => {
     if (fileList.length === 0) {
@@ -28,14 +28,22 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ visible, onClose }) => {
       // 第一步：创建项目
       const newProject = await createProject(values.name);
       if (newProject) {
-        // 第二步：上传PDF
-        await uploadPdf(newProject.id, fileList[0].originFileObj as File);
-        message.success('项目创建成功');
-        
+        // 第二步：上传PDF并自动切分
+        await uploadPdfAndConvert(newProject.id, fileList[0].originFileObj as File);
+
+        // 等待PDF转换完成
+        if (isPdfConverting) {
+          message.info('PDF转换中，请稍候...');
+          // 转换完成后会自动刷新项目数据
+          return;
+        }
+
+        message.success('项目创建成功，页面正在切分中...');
+
         // 第三步：重新获取项目数据以确保包含最新信息
         // fetchProject 会自动设置 currentProject
         await fetchProject(newProject.id);
-        
+
         form.resetFields();
         setFileList([]);
         onClose();
@@ -103,10 +111,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ visible, onClose }) => {
           name="name"
           rules={[
             { required: true, message: '请输入项目名称' },
-            { max: 50, message: '项目名称不能超过50个字符' }
+            { max: 50, message: '项目名称不能超过50个字符' },
+            {
+              pattern: /^[a-zA-Z0-9_-]+$/,
+              message: '项目名称只能包含英文字母、数字、下划线和连字符'
+            }
           ]}
         >
-          <Input placeholder="请输入项目名称" />
+          <Input placeholder="请输入项目名称（仅支持英文字母、数字、_和-）" />
         </Form.Item>
         
         <Form.Item
@@ -129,7 +141,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ visible, onClose }) => {
           <Button onClick={handleCancel} style={{ marginRight: 8 }}>
             取消
           </Button>
-          <Button type="primary" htmlType="submit" loading={loading}>
+          <Button type="primary" htmlType="submit" loading={loading || isPdfConverting}>
             创建
           </Button>
         </Form.Item>

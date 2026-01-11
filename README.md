@@ -8,7 +8,7 @@
 
 *将静态PPT转换为动态有声微课堂，让课堂更有趣*
 
-[![Version](https://img.shields.io/badge/version-v0.2.0-4CAF50.svg?style=for-the-badge&logo=git&logoColor=white)](https://github.com/ChengJiale150/BananaLecture)
+[![Version](https://img.shields.io/badge/version-v0.3.0-4CAF50.svg?style=for-the-badge&logo=git&logoColor=white)](https://github.com/ChengJiale150/BananaLecture)
 [![Docker](https://img.shields.io/badge/Docker-Build-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/chengjiale150/bananalecture)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&logo=open-source-initiative&logoColor=white)](https://opensource.org/licenses/MIT)
 [![Star](https://img.shields.io/github/stars/ChengJiale150/BananaLecture.svg?style=for-the-badge&label=Star&maxAge=2592000&logo=github&logoColor=white)](https://github.com/ChengJiale150/BananaLecture)
@@ -33,7 +33,7 @@
 
 ### 🎨 结果展示
 
-仅需上传上传哆啦A梦风格的PPT,即可享受带有**沉浸式音效（开场白+道具音效）**与**旁白讲解与角色互动**的动态Lecture。
+下面展示了使用哆啦A梦风格的PPT生成的带有**沉浸式音效（开场白+道具音效）**与**旁白讲解与角色互动**的动态微课堂(部分页面)。
 
 https://github.com/user-attachments/assets/9952871a-8316-4e44-8866-780b356da414
 
@@ -58,8 +58,8 @@ https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
 
 ### 👨‍🏫 适用场景
 
-1. **教师**：将知识点讲解打造为“哆啦A梦微课堂”，提升学生兴趣与吸收效果
-2. **学生**：利用视听结合的“哆啦A梦微课堂”，提升学习效率和记忆效果
+1. **教师**：打造“哆啦A梦微课堂”作为课前引入，提升学生兴趣与吸收效果
+2. **学生**：将知识点转化为视听结合的“哆啦A梦微课堂”，提升学习效率和记忆效果
 3. **内容创作者**：生成哆啦A梦交互式视频，拓展知识传播渠道与效果
 
 ## 🎯 功能介绍
@@ -71,16 +71,26 @@ https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
 - **多样化导出格式**: 支持导出为可播放音频的PPT/MP4视频
 
 <div align="center">
-  <img width="800" src="./assets/page1.png">
+  <img width="800" src="https://github.com/user-attachments/assets/65dc7f04-2a8a-4d59-bcee-5dfc9b49adcd">
 </div>
 
 ### 高度可控的编辑配置
-- **页面口播稿**: 支持自定义每个页面的口播内容
-- **角色对话**: 可手动调整不同角色的对话内容
-- **音频参数**: 支持配置音频参数，如情感、语速等
+- **页面口播稿**: 支持自定义每个对话的内容、情感、语速等参数
 
 <div align="center">
-  <img width="800" src="./assets/page2.png">
+  <img width="800" src="https://github.com/user-attachments/assets/093dbd79-5628-4bfd-acbf-94c24153605f">
+</div>
+
+- **多角色设定**: 支持自定义每个对话的角色，如哆啦A梦、大雄等
+
+<div align="center">
+  <img width="800" src="https://github.com/user-attachments/assets/e0157d38-cbd6-488b-828e-c7600099cfa0">
+</div>
+
+- **自定义音色**: 支持自定义每个角色的音色，多种音色可供选择
+
+<div align="center">
+  <img width="800" src="https://github.com/user-attachments/assets/64277de3-739f-4e98-b945-ea577273948d">
 </div>
 
 ## 🏁 快速开始
@@ -104,9 +114,9 @@ cp .env.example .env
 3. **克隆角色音色**
 
 > [!TIP]
-> 该步骤可以省略(如省略，哆啦A梦与大雄的音色将使用默认男女音色)
->
-> 克隆独属你的哆啦A梦与大雄音色以获取最佳效果
+> 本项目对哆啦A梦进行了特殊支持，添加了极具沉浸感的开场白与道具音效
+> 
+> 请克隆哆啦A梦与大雄音色以获取最佳效果
 
 <details>
 <summary><b>具体克隆流程</b></summary>
@@ -119,13 +129,8 @@ cp .env.example .env
 
 1. 选择任意音频源（如动画原片），分别截取10秒以上哆啦A梦与大雄的纯净音频
 2. 在[Minmax音频克隆实验台](https://platform.minimaxi.com/examination-center/voice-experience-center/voiceCloning)上传待克隆音频
-3. 进行音频克隆，成功克隆后获取克隆音色的voice id。
-4. 在[config.yaml](config.yaml)中配置对应角色的voice id。
-
-```yaml
-大雄: "大雄的voice id"
-哆啦A梦: "哆啦A梦的voice id"
-```
+3. 进行音频克隆，大雄音色的voice_id命名为`bananalecture_nobita`，哆啦A梦音色的voice_id命名为`bananalecture_doraemon`
+4. 启动项目在音色组别中选择`Doraemon`即可享受完整效果!
 
 </details>
 
@@ -159,7 +164,7 @@ docker-compose up -d
 
 5. **初步测试**
 
-在[NotebookLM](https://notebooklm.google.com/)中新建一个Notebook，上传你的教学治疗并生成PPT，可以使用如下提示词:
+在[NotebookLM](https://notebooklm.google.com/)中新建一个Notebook，上传你的资料并生成PPT，如要生成哆啦A梦风格的PPT可以使用如下提示词:
 
 ```
 Create a comic in the style of Doraemon manga, depicting Doraemon teaching Nobita the core content of this document, with Chinese dialogue, in color. The comic will be used in a undergraduate class.
