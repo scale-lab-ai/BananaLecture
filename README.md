@@ -35,9 +35,9 @@
 
 下面展示了使用哆啦A梦风格的PPT生成的带有**沉浸式音效（开场白+道具音效）**与**旁白讲解与角色互动**的动态微课堂(部分页面)。
 
-https://github.com/user-attachments/assets/9952871a-8316-4e44-8866-780b356da414
+https://github.com/user-attachments/assets/ec358d06-30eb-48c8-b746-e036679e1238
 
-https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
+https://github.com/user-attachments/assets/eca29280-c519-4ed2-a243-cf974e11c1bb
 
 ### 🚀 核心优势
 
@@ -50,7 +50,7 @@ https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
 
 比起**伪交互**、**不可控**与**黑盒化**相关竞品，我们的项目兼具“技术成熟度”与“场景可控性”，具备高度的定制性和灵活性，专注解决课堂教学实际痛点，真正做到**打通沉浸式课堂教学最后一公里**。
 
-<img width="2000" alt="current solution" src="https://github.com/user-attachments/assets/cfd89b66-aeaa-4fe2-a4d5-2fd55e409b11" />
+<img width="2000" alt="current solution" src="https://github.com/user-attachments/assets/ab81fe04-8269-4b5f-989e-e4c3a144686f" />
 
 </details>
 
@@ -69,26 +69,26 @@ https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
 - **多样化导出格式**: 支持导出为可播放音频的PPT/MP4视频
 
 <div align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/65dc7f04-2a8a-4d59-bcee-5dfc9b49adcd">
+  <img width="800" src="https://github.com/user-attachments/assets/dc59850c-c4de-4bc5-882f-ea8fdb60a87c">
 </div>
 
 ### 高度可控的编辑配置
 - **页面口播稿**: 支持自定义每个对话的内容、情感、语速等参数
 
 <div align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/093dbd79-5628-4bfd-acbf-94c24153605f">
+  <img width="800" src="https://github.com/user-attachments/assets/8759d0d4-fc7c-430a-9432-4c58a6a3eece">
 </div>
 
 - **多角色设定**: 支持自定义每个对话的角色，如哆啦A梦、大雄等
 
 <div align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/e0157d38-cbd6-488b-828e-c7600099cfa0">
+  <img width="800" src="https://github.com/user-attachments/assets/23c501ce-a73a-452f-b2f9-0e720759520d">
 </div>
 
 - **自定义音色**: 支持自定义每个角色的音色，多种音色可供选择
 
 <div align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/64277de3-739f-4e98-b945-ea577273948d">
+  <img width="800" src="https://github.com/user-attachments/assets/75b6ad12-fdbd-4885-9e79-9fa2baffcd58">
 </div>
 
 ## 🏁 快速开始
