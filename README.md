@@ -35,9 +35,9 @@
 
 下面展示了使用哆啦A梦风格的PPT生成的带有**沉浸式音效（开场白+道具音效）**与**旁白讲解与角色互动**的动态微课堂(部分页面)。
 
-[cues](https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/531740149-9952871a-8316-4e44-8866-780b356da414.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150121Z&X-Amz-Expires=300&X-Amz-Signature=1345f346598f6395ce106b48a8b42211d84bb87994b7e5013c80e7f5544ee14f&X-Amz-SignedHeaders=host)
+https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/531740149-9952871a-8316-4e44-8866-780b356da414.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150121Z&X-Amz-Expires=300&X-Amz-Signature=1345f346598f6395ce106b48a8b42211d84bb87994b7e5013c80e7f5544ee14f&X-Amz-SignedHeaders=host
 
-[gadgets](https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/531740239-68838843-96e9-479e-bc70-6ff66795e62b.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150321Z&X-Amz-Expires=300&X-Amz-Signature=33a096cdc0a666708aad76ee80bb7c6d82d9d88478e31d96b03c19418587bba8&X-Amz-SignedHeaders=host)
+https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/531740239-68838843-96e9-479e-bc70-6ff66795e62b.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150321Z&X-Amz-Expires=300&X-Amz-Signature=33a096cdc0a666708aad76ee80bb7c6d82d9d88478e31d96b03c19418587bba8&X-Amz-SignedHeaders=host
 
 ### 🚀 核心优势
 
