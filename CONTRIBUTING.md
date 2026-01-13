@@ -28,7 +28,7 @@ To get started with development, you'll need to set up your environment.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/ChengJiale150/BananaLecture.git
+    git clone https://github.com/scale-lab-ai/BananaLecture.git
     cd BananaLecture
     ```
 

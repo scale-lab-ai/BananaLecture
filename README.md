@@ -8,10 +8,10 @@
 
 *将静态PPT转换为动态有声微课堂，让课堂更有趣*
 
-[![Version](https://img.shields.io/badge/version-v0.3.0-4CAF50.svg?style=for-the-badge&logo=git&logoColor=white)](https://github.com/ChengJiale150/BananaLecture)
+[![Version](https://img.shields.io/badge/version-v0.3.0-4CAF50.svg?style=for-the-badge&logo=git&logoColor=white)](https://github.com/scale-lab-ai/BananaLecture)
 [![Docker](https://img.shields.io/badge/Docker-Build-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/chengjiale150/bananalecture)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&logo=open-source-initiative&logoColor=white)](https://opensource.org/licenses/MIT)
-[![Star](https://img.shields.io/github/stars/ChengJiale150/BananaLecture.svg?style=for-the-badge&label=Star&maxAge=2592000&logo=github&logoColor=white)](https://github.com/ChengJiale150/BananaLecture)
+[![Star](https://img.shields.io/github/stars/scale-lab-ai/BananaLecture.svg?style=for-the-badge&label=Star&maxAge=2592000&logo=github&logoColor=white)](https://github.com/scale-lab-ai/BananaLecture)
 
 *如果该项目对你有用， 欢迎star🌟 &  fork🍴*
 
@@ -38,8 +38,6 @@
 https://github.com/user-attachments/assets/9952871a-8316-4e44-8866-780b356da414
 
 https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
-
-更多完整案例详见[**BananaLecture-example**](https://github.com/ChengJiale150/BananaLecture-example)。
 
 ### 🚀 核心优势
 
@@ -98,7 +96,7 @@ https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
 1. **拉取项目代码**
 
 ```bash
-git clone https://github.com/ChengJiale150/BananaLecture.git
+git clone https://github.com/scale-lab-ai/BananaLecture.git
 cd BananaLecture
 ```
 
