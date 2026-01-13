@@ -35,9 +35,9 @@
 
 下面展示了使用哆啦A梦风格的PPT生成的带有**沉浸式音效（开场白+道具音效）**与**旁白讲解与角色互动**的动态微课堂(部分页面)。
 
-https://github.com/user-attachments/assets/9952871a-8316-4e44-8866-780b356da414
+[cues](https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/531740149-9952871a-8316-4e44-8866-780b356da414.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150121Z&X-Amz-Expires=300&X-Amz-Signature=1345f346598f6395ce106b48a8b42211d84bb87994b7e5013c80e7f5544ee14f&X-Amz-SignedHeaders=host)
 
-https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
+[gadgets](https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/531740239-68838843-96e9-479e-bc70-6ff66795e62b.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150321Z&X-Amz-Expires=300&X-Amz-Signature=33a096cdc0a666708aad76ee80bb7c6d82d9d88478e31d96b03c19418587bba8&X-Amz-SignedHeaders=host)
 
 ### 🚀 核心优势
 
@@ -50,7 +50,7 @@ https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
 
 比起**伪交互**、**不可控**与**黑盒化**相关竞品，我们的项目兼具“技术成熟度”与“场景可控性”，具备高度的定制性和灵活性，专注解决课堂教学实际痛点，真正做到**打通沉浸式课堂教学最后一公里**。
 
-<img width="2000" alt="current solution" src="https://github.com/user-attachments/assets/cfd89b66-aeaa-4fe2-a4d5-2fd55e409b11" />
+<img width="2000" alt="current solution" src="https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/532340934-cfd89b66-aeaa-4fe2-a4d5-2fd55e409b11.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150515Z&X-Amz-Expires=300&X-Amz-Signature=ffd066312454eb403e530575a0201062f2d665d2bc0f1faa6da1cbd45b296874&X-Amz-SignedHeaders=host" />
 
 </details>
 
@@ -69,26 +69,26 @@ https://github.com/user-attachments/assets/68838843-96e9-479e-bc70-6ff66795e62b
 - **多样化导出格式**: 支持导出为可播放音频的PPT/MP4视频
 
 <div align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/65dc7f04-2a8a-4d59-bcee-5dfc9b49adcd">
+  <img width="800" src="https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/534354024-65dc7f04-2a8a-4d59-bcee-5dfc9b49adcd.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150530Z&X-Amz-Expires=300&X-Amz-Signature=eb8be3ac75166f2c93e74ac4f151d12d2a4d03bc78a02101af6f94389b20dc46&X-Amz-SignedHeaders=host">
 </div>
 
 ### 高度可控的编辑配置
 - **页面口播稿**: 支持自定义每个对话的内容、情感、语速等参数
 
 <div align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/093dbd79-5628-4bfd-acbf-94c24153605f">
+  <img width="800" src="https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/534354232-093dbd79-5628-4bfd-acbf-94c24153605f.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150546Z&X-Amz-Expires=300&X-Amz-Signature=6877c9a945d3a62d094b6b155a13173bdca7a52b70919609f6d6d363da1717c5&X-Amz-SignedHeaders=host">
 </div>
 
 - **多角色设定**: 支持自定义每个对话的角色，如哆啦A梦、大雄等
 
 <div align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/e0157d38-cbd6-488b-828e-c7600099cfa0">
+  <img width="800" src="https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/534354345-e0157d38-cbd6-488b-828e-c7600099cfa0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150556Z&X-Amz-Expires=300&X-Amz-Signature=c48d4cac18792b063f2b2bb693ba30503234335ed006d7be5167259a57cd0793&X-Amz-SignedHeaders=host">
 </div>
 
 - **自定义音色**: 支持自定义每个角色的音色，多种音色可供选择
 
 <div align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/64277de3-739f-4e98-b945-ea577273948d">
+  <img width="800" src="https://github-production-user-asset-6210df.s3.amazonaws.com/147157657/534354423-64277de3-739f-4e98-b945-ea577273948d.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260113T150611Z&X-Amz-Expires=300&X-Amz-Signature=084a57ddc08d3fc9b4444ba1c8aba8454c75ba67e225438a43b3e248b384b6c9&X-Amz-SignedHeaders=host">
 </div>
 
 ## 🏁 快速开始
